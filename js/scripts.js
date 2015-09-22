@@ -1,37 +1,25 @@
 var LiteSails = (function () {
 
+    var map;
+
     return {
         init: function () {
+            LiteSails.map = 'kvarner';
             LiteSails.forecast();
-            //$( "#content" ).load( "kvarner.html", function() {
-            //    LiteSails.forecast();
-            //});
-
-            //$('.map-area').on('click', function(e) {
-            //    e.preventDefault();
-            //    $( "#content" ).load( $(this).data('source'), function() {
-            //        LiteSails.forecast();
-            //    });
-            //});
+            LiteSails.updateArea(LiteSails.ucfirst(LiteSails.map));
         },
 
         initMainMenu: function () {
             $('.aladin-map').on('click', function(e) {
                 e.preventDefault();
 
-                var source = $(this).data('source');
+                LiteSails.map = $(this).data('map');
+                LiteSails.updateArea(LiteSails.ucfirst(LiteSails.map));
 
-                //$('div.tab-content').attr('data-source', source);
-
-                $('div.tab-content').attr('data-source', source).load(function() {
+                $('div.tab-content').attr('data-source', LiteSails.map).load(function() {
                     LiteSails.forecast();
                 });
-
-
-
-                //$( "#content" ).load( $(this).data('source'), function() {
-                //    LiteSails.forecast();
-                //});
+                $('.aladin-hour > li.active > a').trigger('click');
             });
         },
 
@@ -44,9 +32,7 @@ var LiteSails = (function () {
         },
 
         showImage: function (el) {
-            //var target = el.parent().parent().data('source');
-            var target = el.closest('.tab-content').data('source');
-            alert(target);
+            var target = LiteSails.map;
 
             if (target == 'kvarner') {
                 var url_start = 'http://prognoza.hr/aladinHR/web_uv10_SENJ_';
@@ -71,6 +57,19 @@ var LiteSails = (function () {
         activate: function (el) {
             $('.aladin-hour > li').removeClass('active');
             el.parent().addClass('active');
+        },
+
+        updateArea: function (areaName) {
+            $('span.area').text(areaName);
+        },
+
+        ucfirst: function(str, force) {
+            str = force ? str.toLowerCase() : str;
+            return str.replace(/(\b)([a-zA-Z])/,
+                function(firstLetter){
+                    return firstLetter.toUpperCase();
+                }
+            );
         }
     };
 

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>BigU</title>
+    <title>Lite Sails</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -36,7 +36,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Lite Sails</a>
+                <a class="navbar-brand" href="index.html">Lite Sails</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -45,17 +45,17 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wind <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li class="dropdown-header">Choose area</li>
-							<li><a href="#" class="aladin-map" data-source="kvarner">Istra & Kvarner</a></li>
-							<li><a href="#" class="aladin-map" data-source="zadar">Zadar</a></li>
-							<li><a href="#" class="aladin-map" data-source="split">Split</a></li>
-							<li><a href="#" class="aladin-map" data-source="dubrovnik">Dubrovnik</a></li>
+							<li><a href="#" class="aladin-map" data-map="kvarner">Istra & Kvarner</a></li>
+							<li><a href="#" class="aladin-map" data-map="zadar">Zadar</a></li>
+							<li><a href="#" class="aladin-map" data-map="split">Split</a></li>
+							<li><a href="#" class="aladin-map" data-map="dubrovnik">Dubrovnik</a></li>
 						</ul>
 					</li>
                     <li>
-                        <a href="#">Weather</a>
+                        <a href="http://prognoza.hr/tri_karta.php?id=tri&param=Splitsko-dalmatinska&code=Split" target="_blank">Weather</a>
                     </li>
                     <li>
-                        <a href="#">Sea</a>
+                        <a href="http://www.dhmz.htnet.hr/prognoza/prognoze.php?id=pomorci" target="_blank">Sea</a>
                     </li>
                 </ul>
             </div>
@@ -71,9 +71,9 @@
             <div class="col-lg-12" id="content">
 
                 <ul class="nav nav-tabs nav-justified" role="tablist">
-                    <li class="active"><a href="#today" data-toggle="tab">Today</a></li>
-                    <li><a href="#tomorrow" data-toggle="tab">Tomorrow</a></li>
-                    <li><a href="#after" data-toggle="tab">Day After tomorrow</a></li>
+                    <li class="active"><a href="#today" data-toggle="tab"><span class="area"></span> Today</a></li>
+                    <li><a href="#tomorrow" data-toggle="tab"><span class="area"></span> Tomorrow</a></li>
+                    <li><a href="#after" data-toggle="tab"><span class="area"></span> Day After tomorrow</a></li>
                 </ul>
 
                 <div class="tab-content" data-source="kvarner">
