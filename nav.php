@@ -22,7 +22,7 @@
 					</ul>
 				</li>
 				<li>
-					<a href="weather.php" target="_blank">Weather</a>
+					<a href="weather.php">Weather</a>
 				</li>
 				<li>
 					<a href="sea.php">Sea</a>
