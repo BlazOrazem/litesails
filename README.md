@@ -1,3 +1,3 @@
 # Lite Sails
 
-Wind and Weather forecast for Adriatic 
+Wind and Weather forecast for Adriatic Sea.

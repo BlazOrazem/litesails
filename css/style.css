@@ -1,3 +1,13 @@
 a , li {
 	outline: none !important;
 }
+ul, ol {
+    margin: 10px 0 10px 24px;
+    padding: 0 0 5px 0;
+}
+ul li.panel li {
+    padding: 0 0 5px 0;
+}
+#accordion li.panel{
+    margin-bottom: 0px;
+}

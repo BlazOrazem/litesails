@@ -4,9 +4,12 @@ var LiteSails = (function () {
 
     return {
         init: function () {
-            LiteSails.map = 'kvarner';
-            LiteSails.forecast();
-            LiteSails.updateArea(LiteSails.ucfirst(LiteSails.map));
+            if ($('div.tab-content').length) {
+                LiteSails.map = $('div.tab-content').attr('data-source');
+                LiteSails.forecast();
+                LiteSails.updateArea(LiteSails.ucfirst(LiteSails.map));
+                LiteSails.initMainMenu();
+            }
         },
 
         initMainMenu: function () {
@@ -63,6 +66,17 @@ var LiteSails = (function () {
             $('span.area').text(areaName);
         },
 
+        initWeather: function () {
+            if (!$('.weather').length) {
+                return;
+            }
+            $('.weather li.panel > ol > li > a').on('click', function(e) {
+                e.preventDefault();
+                var iframeUrl = $(this).attr('href');
+                $('iframe#weather').attr('src', iframeUrl);
+            });
+        },
+
         ucfirst: function(str, force) {
             str = force ? str.toLowerCase() : str;
             return str.replace(/(\b)([a-zA-Z])/,
@@ -75,4 +89,4 @@ var LiteSails = (function () {
 
 })();
 LiteSails.init();
-LiteSails.initMainMenu();
+LiteSails.initWeather();

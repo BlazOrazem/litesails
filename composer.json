@@ -1,0 +1,13 @@
+{
+    "name": "fliper/litesails",
+    "description": "LiteSails weather forecast for Adriatic Sea",
+    "require": {
+        "electrolinux/phpquery": "*"
+    },
+    "authors": [
+        {
+            "name": "Blaž Oražem",
+            "email": "blaz@orazem.info"
+        }
+    ]
+}
