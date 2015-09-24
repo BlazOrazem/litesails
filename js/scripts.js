@@ -1,7 +1,7 @@
 var LiteSails = (function () {
 
     var map;
-    var gst;
+    var timer;
 
     return {
         init: function () {
