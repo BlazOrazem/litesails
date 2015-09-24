@@ -11,6 +11,7 @@
                 <li class="active"><a href="#today" data-toggle="tab"><span class="area"></span> Today</a></li>
                 <li><a href="#tomorrow" data-toggle="tab"><span class="area"></span> Tomorrow</a></li>
                 <li><a href="#after" data-toggle="tab"><span class="area"></span> Day After tomorrow</a></li>
+                <li class="animation"><a href="#animation" data-toggle="tab"><span class="area"></span> Animation</a></li>
             </ul>
 
             <div class="tab-content" data-source="<?php echo(isset($_GET['map']) ? $_GET['map'] : 'split');  ?>">
@@ -56,6 +57,9 @@
                         </ul>
                     </nav>
                 </div>
+				<div class="tab-pane" id="animation">
+					<p class="text-center"><br /><a href="#" class="stop-animation btn btn-info">Stop animation</a></p>
+				</div>
                 <img src="images/sailboat.gif" id="aladin-image" class="img-responsive center-block">
             </div>
 

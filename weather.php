@@ -42,6 +42,29 @@
 						<li><a href="http://prognoza.hr/tri_print.php?id=tri&param=Dubrovacko-neretvanska&code=Dubrovnik">Dubrovnik</a></li>
 					</ol>
 				</li>
+				<li class="panel">
+					<a class="bg-info" data-toggle="collapse" data-parent="#accordion" href="#acc5">7 day forecast</a>
+					<ol id="acc5" class="collapse">
+						<li class="dropdown-header">Istra & Kvarner</li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14301">Poreč</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam.php?id=sedam&param=Hrvatska&code=14303">Rovinj</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14307">Pula</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14317">Rijeka</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14006">Krk</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14323">Senj</a></li>
+						<li class="dropdown-header">Zadar Area</li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14008">Pag</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14007">Nin</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14428">Zadar</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14438">Šibenik</a></li>
+						<li class="dropdown-header">Split Area</li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14445">Split</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14454">Makarska</a></li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14462">Ploče</a></li>
+						<li class="dropdown-header">Dubrovnik Area</li>
+						<li><a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14472">Dubrovnik</a></li>
+					</ol>
+				</li>
 			</ul>
 		</div>
 		<div class="col-md-9">

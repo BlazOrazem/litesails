@@ -1,13 +1,39 @@
 a , li {
 	outline: none !important;
 }
-ul, ol {
-    margin: 10px 0 10px 24px;
+ul {
+    margin: 10px 0;
     padding: 0 0 5px 0;
 }
-ul li.panel li {
-    padding: 0 0 5px 0;
+ol {
+    margin: 0;
+    padding: 0;
 }
 #accordion li.panel{
     margin-bottom: 0px;
+}
+ul.weather ol {
+    list-style: none;
+    color: #777;
+}
+ul.weather ol li {
+    border-bottom: 1px solid #c7eaf4;
+}
+ul.weather ol li:last-child {
+    border-bottom: none;
+}
+ul.weather ol li.dropdown-header {
+    margin: 0;
+    padding: 10px 0 3px 5px;
+}
+ul.weather ol li a {
+    display: block;
+    padding: 5px 15px;
+    text-decoration: none;
+}
+ul.weather ol li a:hover {
+    color: blue;
+}
+.animation a {
+    cursor: pointer !important;
 }

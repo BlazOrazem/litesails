@@ -1,6 +1,7 @@
 var LiteSails = (function () {
 
     var map;
+    var gst;
 
     return {
         init: function () {
@@ -9,6 +10,7 @@ var LiteSails = (function () {
                 LiteSails.forecast();
                 LiteSails.updateArea(LiteSails.ucfirst(LiteSails.map));
                 LiteSails.initMainMenu();
+                LiteSails.initAnimation();
             }
         },
 
@@ -26,15 +28,30 @@ var LiteSails = (function () {
             });
         },
 
+        initAnimation: function () {
+            $('li.animation').on('click', function(e) {
+                var hourSet = ['03','06','09','12','15','18','21','24','27','30','33','36','39','42','45','48','51','54','57','60','63','66','69','72'];
+                setTimeout(function loop() {
+                    LiteSails.showImage(hourSet.shift());
+                    if (hourSet.length)
+                        LiteSails.timer = setTimeout(loop, 1000);
+                }, 1000);
+            });
+            $('.stop-animation, .nav-tabs > li').on('click', function(e) {
+                e.preventDefault();
+                clearTimeout(LiteSails.timer);
+            });
+        },
+
         forecast: function () {
             $('.aladin-hour > li > a').on('click', function(e) {
                 e.preventDefault();
                 LiteSails.activate($(this));
-                LiteSails.showImage($(this));
+                LiteSails.showImage($(this).data('value'));
             });
         },
 
-        showImage: function (el) {
+        showImage: function (hour) {
             var target = LiteSails.map;
 
             if (target == 'kvarner') {
@@ -49,10 +66,9 @@ var LiteSails = (function () {
             if (target == 'dubrovnik') {
                 var url_start = 'http://prognoza.hr/aladinHR/web_uv10_DUBR_';
             }
-            var url_value = el.data('value');
             var url_end = '.gif';
 
-            var image_url = url_start + url_value + url_end;
+            var image_url = url_start + hour + url_end;
 
             $("#aladin-image").attr("src",image_url);
         },
