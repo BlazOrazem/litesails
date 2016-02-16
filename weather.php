@@ -79,7 +79,7 @@
                                 <a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14301">Poreč</a>
                             </li>
                             <li>
-                                <a href="http://www.dhmz.htnet.hr/prognoza/sedam.php?id=sedam&param=Hrvatska&code=14303">Rovinj</a>
+                                <a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14303">Rovinj</a>
                             </li>
                             <li>
                                 <a href="http://www.dhmz.htnet.hr/prognoza/sedam_print.php?id=sedam&param=Hrvatska&code=14307">Pula</a>
