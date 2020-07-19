@@ -21,7 +21,7 @@
                 </li>
             </ul>
 
-            <div class="tab-content" data-source="<?= $_GET['map'] ?? 'adriatic' ?>">
+            <div class="tab-content" data-source="<?= isset($_GET['map']) ? $_GET['map'] : 'adriatic' ?>">
                 <div id="js-wind-forecast" class="tab-pane active">
                     <nav class="text-center">
                         <ul class="pagination aladin-hour">
