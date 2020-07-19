@@ -8,7 +8,7 @@
     <p class="text-center">
         <i class="github-icon"></i>
         <a href="https://github.com/BlazOrazem/litesails" target="_blank">
-            Lite Sails - wind, weather and sea forecast on Github.
+            Lite Sails on Github.
         </a>
     </p>
 </footer>

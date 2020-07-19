@@ -13,7 +13,7 @@
 
     <h1 class="page-title text-center jumbotron">Sea forecast</h1>
 
-    <ul class="nav nav-tabs nav-justified" role="tablist">
+    <ul class="nav nav-tabs nav-justified nav-shadowed" role="tablist">
         <li class="active">
             <a href="#recap" data-toggle="tab">Quick recap</a>
         </li>
@@ -96,7 +96,7 @@
         <div class="tab-pane" id="forecast">
             <div class="row">
                 <div class="col col-md-4">
-                    <div class="alert alert-warning">
+                    <div class="alert alert-info">
                         <h3 class="text-info">North Adriatic</h3>
                         <?php
                             if ($northAdriatic = pq("h5:contains('Sjeverni Jadran')")->next('div')->html()) {
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col col-md-4">
-                    <div class="alert alert-warning">
+                    <div class="alert alert-success">
                         <h3 class="text-info">Middle Adriatic</h3>
                         <?php
                             if ($middleAdriatic = pq("h5:contains('Srednji Jadran')")->next('div')->html()) {

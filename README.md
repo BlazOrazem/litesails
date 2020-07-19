@@ -14,7 +14,15 @@ Wind, weather and sea forecast for Adriatic sea.
 
 - Animations are not working properly
 
-# License
+## Demo
+
+Visit [https://lite.fliper.si](https://lite.fliper.si) for demo.
+
+## Author
+
+Blaž Oražem, [www.orazem.si](www.orazem.si)
+
+## License
 
 Lite Sails is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 

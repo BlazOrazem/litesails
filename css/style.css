@@ -33,6 +33,12 @@ ol {
 .nav-tabs li a {
     white-space: nowrap;
 }
+.nav-tabs.nav-shadowed li a {
+    background: #f8f8f8;
+}
+.nav-tabs.nav-shadowed li.active a {
+    background: white;
+}
 
 ul.weather ol {
     list-style: none;
@@ -73,6 +79,10 @@ img.wind-rose {
         max-width: 600px;
     }
 }
+
+/*#waves .pagination li {*/
+/*    width: 25%;*/
+/*}*/
 
 img.adriatic-map {
     padding: 20px 0;

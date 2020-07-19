@@ -12,7 +12,7 @@
 
             <hr>
 
-            <ul class="nav nav-tabs nav-justified" role="tablist">
+            <ul class="nav nav-tabs nav-justified nav-shadowed" role="tablist">
                 <li class="active">
                     <a href="#js-wind-forecast" data-toggle="tab">Forecast</a>
                 </li>
