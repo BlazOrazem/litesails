@@ -1,17 +1,39 @@
-a , li {
-	outline: none !important;
+html {
+    overflow-y: scroll;
 }
-ul {
-    margin: 10px 0;
-    padding: 0 0 5px 0;
+h1.page-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+a , li {
+    outline: none !important;
 }
 ol {
     margin: 0;
     padding: 0;
 }
-#accordion li.panel{
+
+.jumbotron {
+    background: aliceblue;
+    color: #5290CC;
+}
+
+.navbar-image {
+    display: flex;
+}
+.navbar-image > img {
+    margin: -2px 10px auto 0;
+    height: initial;
+}
+
+#accordion li.panel {
     margin-bottom: 0px;
 }
+
+.nav-tabs li a {
+    white-space: nowrap;
+}
+
 ul.weather ol {
     list-style: none;
     color: #777;
@@ -34,6 +56,71 @@ ul.weather ol li a {
 ul.weather ol li a:hover {
     color: blue;
 }
+
 .animation a {
     cursor: pointer !important;
+}
+.animation-controls {
+    margin: 20px 10px 30px 10px;
+}
+
+img.wind-rose {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+@media (min-width: 992px){
+    img.wind-rose {
+        max-width: 600px;
+    }
+}
+
+img.adriatic-map {
+    padding: 20px 0;
+}
+
+table th {
+    white-space: nowrap;
+}
+table.douglas-scale td:first-child {
+    text-align: right;
+}
+table.douglas-scale td:nth-child(2),
+table.douglas-scale td:nth-child(3) {
+    white-space: nowrap;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+.alert h3 {
+    margin-top: 0;
+}
+
+footer {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+footer p {
+    color: #888;
+    font-size: 13px;
+    line-height: 24px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.github-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-top: -4px;
+    background-color: #888;
+    -webkit-mask: url(https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg) no-repeat center;
+    mask: url(https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg) no-repeat center;
 }

@@ -1,13 +1,26 @@
 {
-    "name": "fliper/litesails",
-    "description": "LiteSails weather forecast for Adriatic Sea",
+    "name": "blazorazem/litesails",
+    "type": "project",
+    "description": "Lite Sails wind and weather forecast for Adriatic Sea",
+    "keywords": [
+        "adriatic",
+        "weather",
+        "wind",
+        "forecast",
+        "sailing"
+    ],
+    "homepage": "https://github.com/BlazOrazem/litesails",
+    "license": "MIT",
+    "authors": [{
+        "name": "Blaz Orazem",
+        "email": "blaz@orazem.si",
+        "homepage": "https://www.orazem.si",
+        "role": "Lead Developer"
+    }],
     "require": {
+        "php": "^7.0",
         "electrolinux/phpquery": "*"
     },
-    "authors": [
-        {
-            "name": "Blaž Oražem",
-            "email": "blaz@orazem.info"
-        }
-    ]
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
