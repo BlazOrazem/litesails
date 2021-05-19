@@ -32,20 +32,20 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">Select an area</li>
-                        <li><a href="index.php?map=adriatic" class="wind-map" data-map="adriatic">Adriatic</a></li>
-                        <li><a href="index.php?map=north-adriatic" class="wind-map" data-map="north-adriatic">North Adriatic</a></li>
-                        <li><a href="index.php?map=middle-adriatic" class="wind-map" data-map="middle-adriatic">Middle Adriatic</a></li>
-                        <li><a href="index.php?map=south-adriatic" class="wind-map" data-map="south-adriatic">South Adriatic</a></li>
+                        <li><a href="/?map=adriatic" class="wind-map" data-map="adriatic">Adriatic</a></li>
+                        <li><a href="/?map=north-adriatic" class="wind-map" data-map="north-adriatic">North Adriatic</a></li>
+                        <li><a href="/?map=middle-adriatic" class="wind-map" data-map="middle-adriatic">Middle Adriatic</a></li>
+                        <li><a href="/?map=south-adriatic" class="wind-map" data-map="south-adriatic">South Adriatic</a></li>
                     </ul>
                 </li>
                 <li class="<?= isPage('weather') ?>">
-                    <a href="weather.php">Weather forecast</a>
+                    <a href="/weather">Weather forecast</a>
                 </li>
                 <li class="<?= isPage('sea') ?>">
-                    <a href="sea.php">Sea forecast</a>
+                    <a href="/sea">Sea forecast</a>
                 </li>
                 <li class="<?= isPage('winds') ?>">
-                    <a href="winds.php">Adriatic winds</a>
+                    <a href="/winds">Adriatic winds</a>
                 </li>
                 <li class="<?= isPage('knots') ?>">
                     <a href="https://www.animatedknots.com/boating-knots" target="_blank">Nautical knots</a>
