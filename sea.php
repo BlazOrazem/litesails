@@ -2,10 +2,11 @@
     include_once('header.php');
     include_once('nav.php');
 
-    $html = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
+    $forecast = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
+    $temperature = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
 
-    if (!$doc = phpQuery::newDocumentFileHTML($html)) {
-        $doc = null;
+    if ($forecastDocument = phpQuery::newDocumentFileHTML($forecast)) {
+        phpQuery::selectDocument($forecastDocument);
     }
 ?>
 
@@ -21,20 +22,23 @@
             <a href="#forecast" data-toggle="tab">Descriptive forecast</a>
         </li>
         <li>
-            <a href="#waves" data-toggle="tab">Wave direction and height</a>
+            <a href="#waves" data-toggle="tab">Waves</a>
         </li>
         <li>
             <a href="#info" data-toggle="tab">Info</a>
+        </li>
+        <li>
+            <a href="#temperature" data-toggle="tab">Temperature</a>
         </li>
     </ul>
 
     <div class="tab-content">
 
         <div class="tab-pane active" id="recap">
+            <h3 class="text-center alert alert-success">Adriatic sea forecast</h3>
             <?php
                 if ($warning = pq("h5:contains('Upozorenje')")->next('div')->html()) {
                     echo '
-                        <br />
                         <div class="alert alert-danger">
                             <h3 class="text-danger text-center"><strong>Warning</strong></h3>
                             <p class="lead text-center">' . $warning . '</p>
@@ -58,7 +62,6 @@
 
                         $data = array_chunk($data, 6);
                     ?>
-                    <h2 class="text-center alert alert-success">Adriatic sea forecast</h2>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -94,6 +97,7 @@
         </div>
 
         <div class="tab-pane" id="forecast">
+            <h3 class="text-center alert alert-success">Descriptive forecast</h3>
             <div class="row">
                 <div class="col col-md-4">
                     <div class="alert alert-info">
@@ -129,6 +133,7 @@
         </div>
 
         <div class="tab-pane" id="waves">
+            <h3 class="text-center alert alert-success">Wave direction and height</h3>
             <nav class="text-center">
                 <ul class="pagination aladin-hour">
                     <li class="active"><a href="#" data-value="[1,2,3,4]">1<sup>st</sup> day</a></li>
@@ -215,6 +220,70 @@
                 <div class="col col-xs-12 center-block">
                     <h3 class="text-center alert alert-success">Map of the Adriatic</h3>
                     <img src="https://prognoza.hr/podjela_jadran.gif" class="adriatic-map img-responsive center-block" />
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="temperature">
+            <div class="row">
+                <div class="col col-xs-12 center-block">
+                    <?php
+                        if ($temperatureDocument = phpQuery::newDocumentFileHTML($temperature)) {
+                            phpQuery::selectDocument($temperatureDocument);
+                        }
+
+                        $data = [];
+                        $table = pq("table#table-aktualni-podaci");
+
+                        foreach ($table['th'] as $th) {
+                            $data[] = pq($th)->text();
+                        }
+
+                        foreach ($table['td'] as $td) {
+                            $data[] = pq($td)->text();
+                        }
+
+                        $data = array_chunk($data, 7);
+                    ?>
+                    <h3 class="text-center alert alert-success">Adriatic sea temperature</h3>
+                    <h4 class="text-center"><?= pq(".glavni__content h4")->text() ?></h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="bg-info">
+                                <?php
+                                    foreach ($data[0] as $title) {
+                                        echo('<th>' . $title . '</th>');
+                                    }
+
+                                    array_shift($data);
+                                ?>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <?php
+                                    foreach ($data as $row) {
+                                        echo('<tr>');
+
+                                        foreach ($row as $cell) {
+                                            echo('<td>' . $cell . '</td>');
+                                        }
+
+                                        echo('</tr>');
+                                    }
+                                ?>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="lead">
+                        <strong>Temperatures</strong> are expressed in <strong>degrees Celsius</strong>.
+                    </p>
                 </div>
             </div>
         </div>
