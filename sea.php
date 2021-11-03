@@ -1,6 +1,6 @@
 <?php
-    include_once('header.php');
-    include_once('nav.php');
+    include('header.php');
+    include('nav.php');
 
     $forecast = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
     $temperature = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
@@ -292,4 +292,4 @@
 
 </div>
 
-<?php include_once('footer.php'); ?>
+<?php include('footer.php'); ?>
