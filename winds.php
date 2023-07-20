@@ -1,6 +1,6 @@
 <?php
-    include_once('header.php');
-    include_once('nav.php');
+    include('header.php');
+    include('nav.php');
 ?>
 
 <div id="js-content" class="container" data-area="winds">
@@ -150,4 +150,4 @@
 
 </div>
 
-<?php include_once('footer.php'); ?>
+<?php include('footer.php'); ?>

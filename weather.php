@@ -1,6 +1,6 @@
 <?php
-    include_once('header.php');
-    include_once('nav.php');
+    include('header.php');
+    include('nav.php');
 
     $pathThree = 'https://prognoza.hr/3dslika2_print_tp_e.php?Code=';
     $pathSeven = 'https://prognoza.hr/7dslika2_print_tp_e.php?Code=';
@@ -277,10 +277,10 @@
             </ul>
         </div>
         <div class="col-md-10">
-            <iframe src="<?= $pathSeven ?>14445" id="weather" frameborder="0" width="100%" height="1200"></iframe>
+            <iframe src="<?= $pathSeven ?>14307" id="weather" width="100%" height="1200"></iframe>
         </div>
     </div>
 
 </div>
 
-<?php include_once('footer.php'); ?>
+<?php include('footer.php'); ?>
