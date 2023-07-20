@@ -149,7 +149,7 @@
                     <a href="#" class="animation-stop btn btn-info">Stop animation</a>
                 </p>
                 <div id="js-sea-forecast-frame">
-                    <img src="https://prognoza.hr/valovi/val_w_1.png" id="js-sea-forecast-image" class="img-responsive center-block" />
+                    <img src="https://prognoza.hr/valovi/val_w.1.png" id="js-sea-forecast-image" class="img-responsive center-block" />
                 </div>
                 <hr>
 

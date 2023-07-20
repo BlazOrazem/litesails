@@ -111,7 +111,7 @@ let LiteSails = (function () {
         },
 
         displaySeaForecastImage: function (hours) {
-            let url = 'https://prognoza.hr/valovi/val_w_';
+            let url = 'https://prognoza.hr/valovi/val_w.';
             let extension = '.png';
 
             let seaUrl = url + hours[0] + extension;
