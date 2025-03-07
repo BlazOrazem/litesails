@@ -39,13 +39,13 @@
                     </ul>
                 </li>
                 <li class="<?= isPage('weather') ?>">
-                    <a href="/weather">Weather forecast</a>
+                    <a href="/weather.php">Weather forecast</a>
                 </li>
                 <li class="<?= isPage('sea') ?>">
-                    <a href="/sea">Sea forecast</a>
+                    <a href="/sea.php">Sea forecast</a>
                 </li>
                 <li class="<?= isPage('winds') ?>">
-                    <a href="/winds">Adriatic winds</a>
+                    <a href="/winds.php">Adriatic winds</a>
                 </li>
                 <li class="<?= isPage('knots') ?>">
                     <a href="https://www.animatedknots.com/boating-knots" target="_blank">Nautical knots</a>
