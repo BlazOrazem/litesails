@@ -18,7 +18,7 @@
         "role": "Lead Developer"
     }],
     "require": {
-        "php": "^7.0",
+        "php": "^7.0|^8.0",
         "electrolinux/phpquery": "*"
     },
     "minimum-stability": "stable",
