@@ -2,8 +2,11 @@
     include('header.php');
     include('nav.php');
 
-    $forecast = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
-    $temperature = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
+    // $forecast = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
+    // $temperature = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
+
+    $forecast = "_dhmz_forecast.html";
+    $temperature = "_dhmz_temperature.html";
 
     if ($forecastDocument = phpQuery::newDocumentFileHTML($forecast)) {
         phpQuery::selectDocument($forecastDocument);
