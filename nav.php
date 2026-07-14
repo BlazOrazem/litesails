@@ -15,7 +15,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand navbar-image" href="/">
-                <img src="/images/favicon.svg" alt="Lite Sails">
+                <img src="/images/favicon.svg?v=<?= @filemtime(__DIR__ . '/images/favicon.svg') ?>" alt="Lite Sails">
                 Lite Sails
             </a>
             <button type="button" id="js-theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
