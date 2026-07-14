@@ -1,28 +1,114 @@
 # Lite Sails
 
-Wind, weather and sea forecast for Adriatic sea.
-
-## TODO
-
-- ["Add to home screen" functionality](https://codelabs.developers.google.com/codelabs/add-to-home-screen/index.html#0)
-- Handle mobile-web-app utilities
-- Create knots.php and handle them locally
-- Find an appropriate logo in high-res
-- Incorporate Gulp and handle frontend assets properly
-
-## Issues
-
-- Animations are not working properly
+Wind, weather and sea forecast for the Adriatic coast — a lightweight,
+mobile-friendly, installable (PWA) web app aimed at sailors and boaters.
 
 ## Demo
 
-Visit [https://lite.fliper.si](https://lite.fliper.si) for demo.
+Visit [https://lite.fliper.si](https://lite.fliper.si) for a live demo.
 
-# Author
+## Features
 
-**Lite Sails** was created by and is maintained by [Blaz Orazem](https://www.orazem.si/).
+- **Wind forecast** — 72-hour ALADIN wind & gust maps for the whole Adriatic and
+  its North / Middle / South sub-areas, with a play/stop animation.
+- **Weather forecast** — 7-day DHMZ forecast for 170+ towns along the Croatian
+  coast, grouped by county, with an hourly-detail view.
+- **Sea forecast** — marine forecast (sea state, Douglas scale, wave animation)
+  and current sea temperatures.
+- **Adriatic winds** — a reference guide to the local winds (Bura, Jugo,
+  Maestral, Tramontana, Lebić, …).
+- **PWA** — installable on Android/desktop and iOS (Add to Home Screen), with an
+  offline fallback page.
 
-Please write an email to [info@numencode.com](mailto:info@numencode.com) about all the things concerning this project.
+## How it works
+
+Forecast data comes from the Croatian Meteorological Service
+([meteo.hr / DHMZ](https://meteo.hr)) and [prognoza.hr](https://prognoza.hr):
+
+- **Weather & sea text** is scraped **server-side** from meteo.hr with cURL and
+  parsed with PHP's built-in `DOMDocument`/`DOMXPath` (no third-party library).
+  Responses are cached on the filesystem for ~30 minutes (`_dhmz_*.html`), so
+  there is **no cron job** to maintain — the cache refreshes on the first request
+  after it expires.
+- **Wind and wave images** are loaded directly in the browser from prognoza.hr.
+
+There is no database and no PHP framework — just a handful of PHP pages sharing
+`header.php` / `nav.php` / `footer.php`.
+
+## Requirements
+
+- **PHP 8.x** (developed/tested on 8.4) with the cURL and DOM extensions.
+- **Apache** with `mod_rewrite`; `mod_headers` and `mod_deflate` strongly
+  recommended (security headers, caching and gzip live in `.htaccess`).
+- **Node.js** (build-time only) to produce the minified asset bundles.
+
+## Getting started
+
+```bash
+# 1. Install the build tooling and front-end libraries.
+npm install
+
+# 2. Build the minified CSS/JS bundles into dist/.
+npm run build
+
+# 3. Serve the project root with Apache/PHP (e.g. Laragon) and open the site.
+```
+
+The pages reference `dist/app.min.css` and `dist/app.min.js`, so **`npm run build`
+must be run before the site will render correctly**, and again after any change
+to `assets/style.css` or `assets/scripts.js`.
+
+## Build pipeline
+
+`build.js` bundles the vendor libraries with the app's own source and writes the
+result to `dist/` (git-ignored, generated on build):
+
+- `dist/app.min.css` — Bootstrap 3.4.1 CSS + `assets/style.css` (minified).
+- `dist/app.min.js` — jQuery 3.7.1 + Bootstrap JS + `assets/scripts.js` (minified).
+- `dist/fonts/` — Bootstrap glyphicon fonts.
+
+HTML references the bundles with `?v=<filemtime>` for cache-busting, which is why
+`.htaccess` can cache `/dist` immutably for a year.
+
+## Project structure
+
+```
+index.php          Wind forecast (home)
+weather.php        7-day weather forecast
+sea.php            Sea forecast + sea temperature
+winds.php          Adriatic winds reference
+404.php            Custom not-found page
+header.php         <head>: SEO/meta, Open Graph, JSON-LD, canonical, asset links
+nav.php            Top navigation
+footer.php         Footer + PWA install UI + script include
+assets/            Source CSS/JS (edit here, then rebuild)
+dist/              Built, minified bundles (generated; git-ignored)
+images/            Icons, favicons, static images, PWA manifest
+sw.js              Service worker (network-first pages, offline fallback)
+offline.html       Offline fallback page
+robots.txt         Crawl rules + sitemap reference
+sitemap.xml        XML sitemap
+.htaccess          Routing, HTTPS redirect, security headers, gzip, caching
+build.js           Asset build script
+```
+
+## Deployment notes
+
+- Run `npm run build` and deploy the generated `dist/` (it is git-ignored).
+- Serve over **HTTPS with a valid certificate** — `.htaccess` forces HTTP→HTTPS
+  and sends HSTS.
+- Update the domain in `robots.txt` and `sitemap.xml` if it isn't
+  `lite.fliper.si` (canonical/Open Graph URLs auto-detect the host).
+- After going live, confirm gzip is active:
+  `curl -sI -H "Accept-Encoding: gzip" https://YOUR-DOMAIN/dist/app.min.js`
+  (expect `content-encoding: gzip`).
+
+## Author
+
+**Lite Sails** was created and is maintained by [Blaz Orazem](https://www.orazem.si/).
+
+Please write an email to [info@numencode.com](mailto:info@numencode.com) about all
+the things concerning this project.
 
 Follow [@blazorazem](https://twitter.com/blazorazem) on Twitter.
 

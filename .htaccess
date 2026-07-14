@@ -1,22 +1,97 @@
+# Serve index.php for the site root.
+DirectoryIndex index.php
+
+# No directory listings.
+Options -Indexes
+
+<IfModule mod_negotiation.c>
+    # Disable content negotiation so it doesn't interfere with extensionless URLs.
+    Options -MultiViews
+</IfModule>
+
+# Deny direct access to project/config files that should never be web-served.
+<FilesMatch "^(package(-lock)?\.json|composer\.(json|lock)|build\.js|_dhmz_.*)$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
-
-    <IfModule mod_negotiation.c>
-        Options -MultiViews
-    </IfModule>
-
     RewriteEngine On
 
-    # Check if the requested file or directory exists
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L] # If it exists, don't rewrite
+    # Force HTTPS. Proxy-aware (X-Forwarded-Proto) so it won't loop behind an
+    # SSL-terminating proxy/CDN that talks HTTP to the origin.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-    # If not, rewrite to the corresponding .php file
+    # Deny hidden files/dirs (.git, .env, .htaccess, …) but keep /.well-known
+    # reachable (Let's Encrypt/ACME challenges, apple-app-site-association, …).
+    RewriteRule "(^|/)\.(?!well-known)" - [F,L]
+
+    # Deny the un-bundled asset sources (they ship minified from /dist).
+    RewriteRule ^assets/ - [F,L]
+
+    # Map an extensionless URL to its .php file, but ONLY when that file exists
+    # (e.g. /weather -> /weather.php). Unknown URLs fall through to the 404 below
+    # instead of being rewritten again and again (which caused a 500).
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ $1.php [L]
-
-    # Handle 404 errors
-    ErrorDocument 404 /404.php
-
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.+)$ $1.php [L]
 </IfModule>
+
+# Gzip-compress text responses (CSS/JS/HTML/SVG/XML). Images and fonts are
+# already compressed, so they're deliberately left out.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE application/rss+xml application/manifest+json image/svg+xml
+</IfModule>
+
+# Caching policy (added when mod_headers is available).
+<IfModule mod_headers.c>
+    # Bundles + fonts are cache-busted via ?v=<filemtime> in the HTML, so a given
+    # URL never changes its contents — cache it for a year, immutably.
+    <FilesMatch "\.(css|js|woff2?|ttf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Static images aren't fingerprinted; cache a month so an icon swap isn't
+    # stuck behind a year-long cache.
+    <FilesMatch "\.(png|jpe?g|gif|svg|ico|webp)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+    # Forecast pages carry live data — always revalidate.
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# Security response headers (added when mod_headers is available).
+<IfModule mod_headers.c>
+    # Don't let browsers MIME-sniff responses away from their declared type.
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Clickjacking protection (legacy header; modern equivalent is the CSP
+    # frame-ancestors directive below).
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Send only the origin (not the full path) as referrer on cross-origin requests.
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Disable powerful browser features the app never uses.
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Content Security Policy. All scripts are self-hosted in one bundled file with
+    # no inline JS, so script-src stays strict. Inline style="" attributes in the
+    # markup require 'unsafe-inline' for styles. Wind/wave forecast images come from
+    # prognoza.hr and weather icons from meteo.hr; everything else is same-origin.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://prognoza.hr https://meteo.hr; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+
+    # HSTS: tell browsers to use HTTPS for a year. Sent only over HTTPS connections
+    # (harmless/ignored over plain HTTP). 'preload' intentionally omitted.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+</IfModule>
+
+# Custom page for unknown URLs.
+ErrorDocument 404 /404.php

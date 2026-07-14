@@ -1,0 +1,248 @@
+html {
+    overflow-y: scroll;
+}
+iframe {
+    border: none;
+}
+h1.page-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+a , li {
+    outline: none !important;
+}
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+.jumbotron {
+    background: aliceblue;
+    color: #5290CC;
+}
+
+.navbar-image {
+    display: flex;
+}
+.navbar-image > img {
+    margin: -2px 10px auto 0;
+    width: 24px;
+    height: 24px;
+}
+
+#accordion li.panel {
+    margin-bottom: 0px;
+}
+
+.nav-tabs li a {
+    white-space: nowrap;
+}
+.nav-tabs.nav-shadowed li a {
+    background: #f8f8f8;
+}
+.nav-tabs.nav-shadowed li.active a {
+    background: white;
+}
+
+ul.weather ol {
+    list-style: none;
+    color: #777;
+}
+ul.weather ol li {
+    border-bottom: 1px solid #c7eaf4;
+}
+ul.weather ol li:last-child {
+    border-bottom: none;
+}
+ul.weather ol li.dropdown-header {
+    margin: 0;
+    padding: 10px 0 3px 5px;
+}
+ul.weather ol li a {
+    display: block;
+    padding: 5px 15px;
+    text-decoration: none;
+}
+ul.weather ol li a:hover {
+    color: blue;
+}
+ul.weather ol li.active {
+    background: #eee;
+}
+ul.weather ol li.active a {
+    color: #333;
+    font-weight: bold;
+}
+
+.animation a {
+    cursor: pointer !important;
+}
+.animation-controls {
+    margin: 20px 10px 30px 10px;
+}
+
+img.wind-rose {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+@media (min-width: 992px){
+    img.wind-rose {
+        max-width: 600px;
+    }
+}
+
+/*#waves .pagination li {*/
+/*    width: 25%;*/
+/*}*/
+
+img.adriatic-map {
+    padding: 20px 0;
+}
+
+table th {
+    white-space: nowrap;
+}
+table.douglas-scale td:first-child {
+    text-align: right;
+}
+table.douglas-scale td:nth-child(2),
+table.douglas-scale td:nth-child(3) {
+    white-space: nowrap;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+.alert h3 {
+    margin-top: 0;
+}
+
+footer {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+footer p {
+    color: #888;
+    font-size: 13px;
+    line-height: 24px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.github-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-top: -4px;
+    background-color: #888;
+    -webkit-mask: url(https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg) no-repeat center;
+    mask: url(https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg) no-repeat center;
+}
+
+/* ---------- Weather forecast page ---------- */
+
+/* Smaller county (group) headers in the left menu */
+ul.weather > li.panel > a {
+    font-size: 13px;
+    padding: 8px 8px;
+}
+
+/* Align the forecast title with the top of the left menu (it's an .alert,
+   which otherwise gets a 10px top margin) */
+#js-content[data-area="weather"] .col-md-10 > h3 {
+    margin-top: 0;
+}
+
+#js-weather-forecast table,
+#js-weather-hourly table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+#js-weather-forecast th,
+#js-weather-forecast td,
+#js-weather-hourly th,
+#js-weather-hourly td {
+    border: 1px solid #ddd;
+    padding: 8px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+#js-weather-forecast th[scope="col"],
+#js-weather-hourly thead th {
+    background: #d9edf7;
+    color: #31708f;
+}
+#js-weather-forecast .image-iconsvg-kratka,
+#js-weather-forecast .image-iconsvg,
+#js-weather-hourly .image-iconsvg-kratka,
+#js-weather-hourly .image-iconsvg {
+    width: 42px;
+    height: 42px;
+}
+#js-weather-forecast .fd-u-color--secondary {
+    color: #c0392b;
+    font-weight: bold;
+}
+#js-weather-forecast .fd-u-color--primary {
+    color: #2980b9;
+    font-weight: bold;
+}
+#js-weather-forecast .js-more-link img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.55;
+}
+#js-weather-forecast .js-more-link:hover img {
+    opacity: 1;
+}
+#js-weather-hourly .js-back {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* ---------- "Add to home screen" banner ---------- */
+.a2hs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    padding: 12px 40px 12px 15px;
+    background: #5290CC;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+}
+.a2hs__text {
+    margin-right: 10px;
+}
+.a2hs__close {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 0 6px;
+    background: none;
+    border: 0;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    opacity: 0.85;
+    cursor: pointer;
+}
+.a2hs__close:hover {
+    opacity: 1;
+}
+.a2hs__steps {
+    text-align: left;
+    padding-left: 20px;
+    margin-bottom: 0;
+}

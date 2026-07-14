@@ -1,16 +1,137 @@
 <?php
+    $pageTitle       = 'Adriatic Sea Forecast — Waves & Sea Temperature | Lite Sails';
+    $pageDescription = 'Marine forecast for the Adriatic: sea state, wave height and direction (Douglas scale), and current sea temperatures.';
+
+    // Wave/map images load from prognoza.hr via JS — warm the connection early.
+    $preconnect = ['https://prognoza.hr'];
+
     include('header.php');
     include('nav.php');
 
-    // $forecast = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
-    // $temperature = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
+    // DHMZ marine forecast + sea temperature, fetched live from meteo.hr through a
+    // short filesystem cache (no external cron needed). Parsing uses PHP's built-in
+    // DOM extension (no third-party dependency).
+    $forecastUrl    = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
+    $temperatureUrl = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
 
-    $forecast = "_dhmz_forecast.html";
-    $temperature = "_dhmz_temperature.html";
+    /**
+     * Fetch a URL through a filesystem cache (default 30 min TTL).
+     *
+     * Serves the cache while it's fresh; otherwise fetches live (cURL, retrying
+     * without TLS verification if the host's CA bundle is misconfigured, then a
+     * file_get_contents fallback) and rewrites the cache. If the live fetch
+     * fails, falls back to a stale cache so the page still renders.
+     */
+    function dhmzFetch($url, $cacheFile, $ttl = 1800) {
+        if (is_file($cacheFile) && (time() - filemtime($cacheFile)) < $ttl) {
+            $cached = file_get_contents($cacheFile);
+            if ($cached !== false && $cached !== '') {
+                return $cached;
+            }
+        }
 
-    if ($forecastDocument = phpQuery::newDocumentFileHTML($forecast)) {
-        phpQuery::selectDocument($forecastDocument);
+        $html = false;
+        if (function_exists('curl_init')) {
+            foreach ([true, false] as $verify) {
+                $ch = curl_init($url);
+                curl_setopt_array($ch, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_TIMEOUT        => 15,
+                    CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LiteSails/1.0)',
+                    CURLOPT_SSL_VERIFYPEER => $verify,
+                    CURLOPT_SSL_VERIFYHOST => $verify ? 2 : 0,
+                ]);
+                $html = curl_exec($ch);
+                curl_close($ch);
+                if ($html !== false && $html !== '') {
+                    break;
+                }
+            }
+        }
+
+        if ($html === false || $html === '') {
+            $html = @file_get_contents($url);
+        }
+
+        if ($html !== false && $html !== '') {
+            @file_put_contents($cacheFile, $html, LOCK_EX);
+            return $html;
+        }
+
+        // Live fetch failed — fall back to a stale cache if one exists.
+        if (is_file($cacheFile)) {
+            $stale = file_get_contents($cacheFile);
+            if ($stale !== false && $stale !== '') {
+                return $stale;
+            }
+        }
+
+        return '';
     }
+
+    /** Load an HTML string into a DOMXPath (UTF-8 safe), or null on empty input. */
+    function seaXPath($html) {
+        if ($html === '' || $html === false || $html === null) {
+            return null;
+        }
+
+        $doc = new DOMDocument();
+        $previous = libxml_use_internal_errors(true);
+        // The <?xml encoding> prefix makes libxml treat the input as UTF-8,
+        // avoiding the 'HTML-ENTITIES' mb_convert_encoding trick (removed in PHP 8.2+).
+        $doc->loadHTML('<?xml encoding="UTF-8">' . $html);
+        libxml_use_internal_errors($previous);
+        libxml_clear_errors();
+
+        return new DOMXPath($doc);
+    }
+
+    /** Trimmed inner HTML of a node (its children serialized). */
+    function seaInnerHtml($node) {
+        if (!$node) {
+            return '';
+        }
+
+        $html = '';
+        foreach ($node->childNodes as $child) {
+            $html .= $node->ownerDocument->saveHTML($child);
+        }
+
+        return trim($html);
+    }
+
+    /**
+     * Inner HTML of the <div> immediately following an <h5> whose text contains $needle — mirrors "h5:contains(...)->next('div')".
+     */
+    function seaSection($xpath, $needle) {
+        if (!$xpath) {
+            return '';
+        }
+
+        $node = $xpath->query("//h5[contains(., '{$needle}')][1]/following-sibling::*[1][self::div]")->item(0);
+
+        return seaInnerHtml($node);
+    }
+
+    /** All <th> then all <td> texts of a table node, whitespace-normalised. */
+    function seaCells($table) {
+        $data = [];
+
+        if (!$table) {
+            return $data;
+        }
+
+        foreach (['th', 'td'] as $tag) {
+            foreach ($table->getElementsByTagName($tag) as $cell) {
+                $data[] = trim(preg_replace('/\s+/', ' ', $cell->textContent));
+            }
+        }
+
+        return $data;
+    }
+
+    $forecastXPath = seaXPath(dhmzFetch($forecastUrl, __DIR__ . '/_dhmz_forecast.html'));
 ?>
 
 <div id="js-content" class="container" data-area="sea">
@@ -40,7 +161,7 @@
         <div class="tab-pane active" id="recap">
             <h3 class="text-center alert alert-success">Adriatic sea forecast</h3>
             <?php
-                if ($warning = pq("h5:contains('Upozorenje')")->next('div')->html()) {
+                if ($warning = seaSection($forecastXPath, 'Upozorenje')) {
                     echo '
                         <div class="alert alert-danger">
                             <h3 class="text-danger text-center"><strong>Warning</strong></h3>
@@ -52,19 +173,12 @@
             <div class="row">
                 <div class="col col-xs-12 center-block">
                     <?php
-                        $data = [];
-                        $table = pq("table#table-aktualni-podaci");
-
-                        foreach ($table['th'] as $th) {
-                            $data[] = pq($th)->text();
-                        }
-
-                        foreach ($table['td'] as $td) {
-                            $data[] = pq($td)->text();
-                        }
-
-                        $data = array_chunk($data, 6);
+                        $table = $forecastXPath
+                            ? $forecastXPath->query("//table[@id='table-aktualni-podaci']")->item(0)
+                            : null;
+                        $data = array_chunk(seaCells($table), 6);
                     ?>
+                    <?php if ($data): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -95,6 +209,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -106,7 +221,7 @@
                     <div class="alert alert-info">
                         <h3 class="text-info">North Adriatic</h3>
                         <?php
-                            if ($northAdriatic = pq("h5:contains('Sjeverni Jadran')")->next('div')->html()) {
+                            if ($northAdriatic = seaSection($forecastXPath, 'Sjeverni Jadran')) {
                                 echo "{$northAdriatic}";
                             }
                         ?>
@@ -116,7 +231,7 @@
                     <div class="alert alert-success">
                         <h3 class="text-info">Middle Adriatic</h3>
                         <?php
-                            if ($middleAdriatic = pq("h5:contains('Srednji Jadran')")->next('div')->html()) {
+                            if ($middleAdriatic = seaSection($forecastXPath, 'Srednji Jadran')) {
                                 echo "{$middleAdriatic}";
                             }
                         ?>
@@ -126,7 +241,7 @@
                     <div class="alert alert-warning">
                         <h3 class="text-info">South Adriatic</h3>
                         <?php
-                            if ($southAdriatic = pq("h5:contains('Južni Jadran')")->next('div')->html()) {
+                            if ($southAdriatic = seaSection($forecastXPath, 'Južni Jadran')) {
                                 echo "{$southAdriatic}";
                             }
                         ?>
@@ -148,8 +263,8 @@
                     <li><a href="#" data-value="[25,26,27,28]">7<sup>th</sup> day</a></li>
                 </ul>
                 <p class="text-center">
-                    <a href="#" class="animation-play btn btn-success" data-hours="[1,2,3,4]">Play animation</a>
-                    <a href="#" class="animation-stop btn btn-info">Stop animation</a>
+                    <a href="#" class="animation-play btn btn-success">Play animation</a>
+                    <a href="#" class="animation-stop btn btn-info" style="display: none;">Stop animation</a>
                 </p>
                 <div id="js-sea-forecast-frame">
                     <img src="https://prognoza.hr/valovi/val_w.1.png" id="js-sea-forecast-image" class="img-responsive center-block" />
@@ -173,20 +288,13 @@
             <div class="row">
                 <div class="col col-xs-12 center-block">
                     <?php
-                        $data = [];
-                        $douglasScale = pq("h5:contains('Douglasova skala')")->next('table');
-
-                        foreach ($douglasScale['th'] as $th) {
-                            $data[] = str_replace('1', ' ',  pq($th)->text());
-                        }
-
-                        foreach ($douglasScale['td'] as $td) {
-                            $data[] = str_replace('glatko,1zrcalno,1bonaca', 'glatko, zrcalno, bonaca', pq($td)->text());
-                        }
-
-                        $data = array_chunk($data, 4);
+                        $douglasScale = $forecastXPath
+                            ? $forecastXPath->query("//h5[contains(., 'Douglasova skala')][1]/following-sibling::*[1][self::table]")->item(0)
+                            : null;
+                        $data = array_chunk(seaCells($douglasScale), 4);
                     ?>
                     <h3 class="text-center alert alert-success">Douglas scale</h3>
+                    <?php if ($data): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered douglas-scale">
                             <thead>
@@ -217,6 +325,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="row">
@@ -231,25 +340,18 @@
             <div class="row">
                 <div class="col col-xs-12 center-block">
                     <?php
-                        if ($temperatureDocument = phpQuery::newDocumentFileHTML($temperature)) {
-                            phpQuery::selectDocument($temperatureDocument);
-                        }
-
-                        $data = [];
-                        $table = pq("table#table-aktualni-podaci");
-
-                        foreach ($table['th'] as $th) {
-                            $data[] = pq($th)->text();
-                        }
-
-                        foreach ($table['td'] as $td) {
-                            $data[] = pq($td)->text();
-                        }
-
-                        $data = array_chunk($data, 7);
+                        $temperatureXPath = seaXPath(dhmzFetch($temperatureUrl, __DIR__ . '/_dhmz_temperature.html'));
+                        $table = $temperatureXPath
+                            ? $temperatureXPath->query("//table[@id='table-aktualni-podaci']")->item(0)
+                            : null;
+                        $data = array_chunk(seaCells($table), 7);
+                        $heading = $temperatureXPath
+                            ? $temperatureXPath->query("//*[contains(@class, 'glavni__content')]//h4")->item(0)
+                            : null;
                     ?>
                     <h3 class="text-center alert alert-success">Adriatic sea temperature</h3>
-                    <h4 class="text-center"><?= pq(".glavni__content h4")->text() ?></h4>
+                    <h4 class="text-center"><?= $heading ? trim($heading->textContent) : '' ?></h4>
+                    <?php if ($data): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -280,6 +382,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="row">

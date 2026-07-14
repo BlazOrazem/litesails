@@ -1,2 +1,5 @@
+.claude
 .idea
 _dhmz_*
+vendor
+node_modules

@@ -1,0 +1,18 @@
+{
+    "name": "litesails",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Asset build pipeline for Lite Sails (bundles + minifies vendor and custom CSS/JS into dist/).",
+    "license": "MIT",
+    "scripts": {
+        "build": "node build.js"
+    },
+    "dependencies": {
+        "bootstrap": "3.4.1",
+        "jquery": "3.7.1"
+    },
+    "devDependencies": {
+        "clean-css": "^5.3.3",
+        "terser": "^5.31.0"
+    }
+}

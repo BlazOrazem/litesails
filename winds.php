@@ -1,4 +1,7 @@
 <?php
+    $pageTitle       = 'Adriatic Winds Guide — Bura, Jugo, Maestral & More | Lite Sails';
+    $pageDescription = 'Guide to the winds of the Adriatic — Bura, Jugo, Maestral, Tramontana, Lebić and more: direction, strength and sailing conditions.';
+
     include('header.php');
     include('nav.php');
 ?>
@@ -143,7 +146,7 @@
         </div>
         <div class="col-md-12">
             <div class="alert alert-success">
-                <img src="images/windrose.png" id="js-wind-rose" class="wind-rose img-responsive center-block">
+                <img src="/images/windrose.png" id="js-wind-rose" class="wind-rose img-responsive center-block" alt="Compass rose showing wind directions">
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <?php
     function isPage($name = 'index') {
-        echo strpos($_SERVER['REQUEST_URI'], $name) ? 'active' : '';
+        echo str_contains($_SERVER['REQUEST_URI'], $name) ? 'active' : '';
     }
 ?>
 
@@ -15,7 +15,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand navbar-image" href="/">
-                <img src="/images/favicon.png">
+                <img src="/images/favicon.svg" alt="Lite Sails">
                 Lite Sails
             </a>
         </div>
@@ -48,7 +48,7 @@
                     <a href="/winds">Adriatic winds</a>
                 </li>
                 <li class="<?= isPage('knots') ?>">
-                    <a href="https://www.animatedknots.com/boating-knots" target="_blank">Nautical knots</a>
+                    <a href="https://www.animatedknots.com/boating-knots" target="_blank" rel="noopener noreferrer">Nautical knots</a>
                 </li>
             </ul>
         </div>

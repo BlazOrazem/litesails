@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /offline.html
+
+Sitemap: https://lite.fliper.si/sitemap.xml
