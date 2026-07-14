@@ -8,6 +8,7 @@ let LiteSails = (function () {
         init: function () {
             LiteSails.initServiceWorker();
             LiteSails.initInstall();
+            LiteSails.initTheme();
 
             if (area == 'wind') {
                 LiteSails.initWind();
@@ -102,6 +103,40 @@ let LiteSails = (function () {
                 });
                 $banner.show();
             }
+        },
+
+        // Dark/light theme switch. The server already applied the saved theme to
+        // <html data-theme> from the `theme` cookie (so no flash); here we just
+        // flip it on click and persist the new choice. With no cookie the page
+        // follows the OS via CSS @media (prefers-color-scheme).
+        initTheme: function () {
+            var $toggle = $('#js-theme-toggle');
+            if (!$toggle.length) {
+                return;
+            }
+
+            var root = document.documentElement;
+
+            function systemPrefersDark() {
+                return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            }
+
+            function currentTheme() {
+                return root.getAttribute('data-theme') || (systemPrefersDark() ? 'dark' : 'light');
+            }
+
+            // Keep the browser/PWA chrome colour in sync with the active theme.
+            function setThemeColor(theme) {
+                $('meta[name="theme-color"]').remove();
+                $('<meta>', { name: 'theme-color', content: theme === 'dark' ? '#16232f' : '#f0f8ff' }).appendTo('head');
+            }
+
+            $toggle.on('click', function () {
+                var next = currentTheme() === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                document.cookie = 'theme=' + next + '; path=/; max-age=31536000; SameSite=Lax';
+                setThemeColor(next);
+            });
         },
 
         updateWindAreaTitle: function (area) {

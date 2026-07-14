@@ -4,6 +4,11 @@
     $description = $pageDescription ?? 'Free, mobile-friendly wind, weather and sea forecast for the Adriatic coast — for sailors and boaters.';
     $robots      = $pageRobots      ?? 'index, follow';
 
+    // Theme: 'dark'/'light' from the cookie, or '' to follow the OS (no cookie).
+    // Rendered onto <html> so there's no flash of the wrong theme, and no inline
+    // JS is needed (which the CSP would block anyway).
+    $theme = (isset($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['dark', 'light'], true)) ? $_COOKIE['theme'] : '';
+
     $scheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host      = $_SERVER['HTTP_HOST'] ?? 'lite.fliper.si';
     $baseUrl   = $scheme . '://' . $host;
@@ -44,7 +49,7 @@
     ];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"<?= $theme ? ' data-theme="' . $theme . '"' : '' ?>>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -81,7 +86,14 @@
     <meta name="apple-mobile-web-app-title" content="Lite Sails" />
     <link rel="manifest" href="/images/site.webmanifest" />
 
-    <meta name="theme-color" content="#5290CC" />
+<?php if ($theme === 'dark'): ?>
+    <meta name="theme-color" content="#16232f" />
+<?php elseif ($theme === 'light'): ?>
+    <meta name="theme-color" content="#f0f8ff" />
+<?php else: ?>
+    <meta name="theme-color" content="#f0f8ff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16232f" media="(prefers-color-scheme: dark)" />
+<?php endif; ?>
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
