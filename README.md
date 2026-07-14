@@ -19,6 +19,9 @@ Visit [https://lite.fliper.si](https://lite.fliper.si) for a live demo.
   Maestral, Tramontana, Lebić, …).
 - **PWA** — installable on Android/desktop and iOS (Add to Home Screen), with an
   offline fallback page.
+- **Dark mode** — follows the device setting by default, with a navbar toggle
+  that remembers your choice (stored in a cookie, applied server-side so there's
+  no flash on load).
 
 ## How it works
 
