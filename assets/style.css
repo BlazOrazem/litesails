@@ -1,0 +1,490 @@
+html {
+    overflow-y: scroll;
+}
+iframe {
+    border: none;
+}
+h1.page-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+a , li {
+    outline: none !important;
+}
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+.jumbotron {
+    background: aliceblue;
+    color: #5290CC;
+}
+
+.navbar-image {
+    display: flex;
+}
+.navbar-image > img {
+    margin: -2px 10px auto 0;
+    width: 24px;
+    height: 24px;
+}
+
+#accordion li.panel {
+    margin-bottom: 0px;
+}
+
+.nav-tabs li a {
+    white-space: nowrap;
+}
+.nav-tabs.nav-shadowed li a {
+    background: #f8f8f8;
+}
+.nav-tabs.nav-shadowed li.active a {
+    background: white;
+}
+
+ul.weather ol {
+    list-style: none;
+    color: #777;
+}
+ul.weather ol li {
+    border-bottom: 1px solid #c7eaf4;
+}
+ul.weather ol li:last-child {
+    border-bottom: none;
+}
+ul.weather ol li.dropdown-header {
+    margin: 0;
+    padding: 10px 0 3px 5px;
+}
+ul.weather ol li a {
+    display: block;
+    padding: 5px 15px;
+    text-decoration: none;
+}
+ul.weather ol li a:hover {
+    color: blue;
+}
+ul.weather ol li.active {
+    background: #eee;
+}
+ul.weather ol li.active a {
+    color: #333;
+    font-weight: bold;
+}
+
+.animation a {
+    cursor: pointer !important;
+}
+.animation-controls {
+    margin: 20px 10px 30px 10px;
+}
+
+img.wind-rose {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+@media (min-width: 992px){
+    img.wind-rose {
+        max-width: 600px;
+    }
+}
+
+/*#waves .pagination li {*/
+/*    width: 25%;*/
+/*}*/
+
+img.adriatic-map {
+    padding: 20px 0;
+}
+
+table th {
+    white-space: nowrap;
+}
+table.douglas-scale td:first-child {
+    text-align: right;
+}
+table.douglas-scale td:nth-child(2),
+table.douglas-scale td:nth-child(3) {
+    white-space: nowrap;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+.alert h3 {
+    margin-top: 0;
+}
+
+footer {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+footer p {
+    color: #888;
+    font-size: 13px;
+    line-height: 24px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.github-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-top: -4px;
+    background-color: var(--ls-muted);
+    /* Inlined so the strict CSP (img-src) can't block it — no CDN dependency. */
+    -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNiAxNic+PHBhdGggZD0nTTggMEMzLjU4IDAgMCAzLjU4IDAgOGMwIDMuNTQgMi4yOSA2LjUzIDUuNDcgNy41OS40LjA3LjU1LS4xNy41NS0uMzggMC0uMTktLjAxLS44Mi0uMDEtMS40OS0yLjAxLjM3LTIuNTMtLjQ5LTIuNjktLjk0LS4wOS0uMjMtLjQ4LS45NC0uODItMS4xMy0uMjgtLjE1LS42OC0uNTItLjAxLS41My42My0uMDEgMS4wOC41OCAxLjIzLjgyLjcyIDEuMjEgMS44Ny44NyAyLjMzLjY2LjA3LS41Mi4yOC0uODcuNTEtMS4wNy0xLjc4LS4yLTMuNjQtLjg5LTMuNjQtMy45NSAwLS44Ny4zMS0xLjU5LjgyLTIuMTUtLjA4LS4yLS4zNi0xLjAyLjA4LTIuMTIgMCAwIC42Ny0uMjEgMi4yLjgyLjY0LS4xOCAxLjMyLS4yNyAyLS4yNy42OCAwIDEuMzYuMDkgMiAuMjcgMS41My0xLjA0IDIuMi0uODIgMi4yLS44Mi40NCAxLjEuMTYgMS45Mi4wOCAyLjEyLjUxLjU2LjgyIDEuMjcuODIgMi4xNSAwIDMuMDctMS44NyAzLjc1LTMuNjUgMy45NS4yOS4yNS41NC43My41NCAxLjQ4IDAgMS4wNy0uMDEgMS45My0uMDEgMi4yIDAgLjIxLjE1LjQ2LjU1LjM4QTguMDEzIDguMDEzIDAgMCAwIDE2IDhjMC00LjQyLTMuNTgtOC04LTh6Jy8+PC9zdmc+") no-repeat center / 20px 20px;
+    mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNiAxNic+PHBhdGggZD0nTTggMEMzLjU4IDAgMCAzLjU4IDAgOGMwIDMuNTQgMi4yOSA2LjUzIDUuNDcgNy41OS40LjA3LjU1LS4xNy41NS0uMzggMC0uMTktLjAxLS44Mi0uMDEtMS40OS0yLjAxLjM3LTIuNTMtLjQ5LTIuNjktLjk0LS4wOS0uMjMtLjQ4LS45NC0uODItMS4xMy0uMjgtLjE1LS42OC0uNTItLjAxLS41My42My0uMDEgMS4wOC41OCAxLjIzLjgyLjcyIDEuMjEgMS44Ny44NyAyLjMzLjY2LjA3LS41Mi4yOC0uODcuNTEtMS4wNy0xLjc4LS4yLTMuNjQtLjg5LTMuNjQtMy45NSAwLS44Ny4zMS0xLjU5LjgyLTIuMTUtLjA4LS4yLS4zNi0xLjAyLjA4LTIuMTIgMCAwIC42Ny0uMjEgMi4yLjgyLjY0LS4xOCAxLjMyLS4yNyAyLS4yNy42OCAwIDEuMzYuMDkgMiAuMjcgMS41My0xLjA0IDIuMi0uODIgMi4yLS44Mi40NCAxLjEuMTYgMS45Mi4wOCAyLjEyLjUxLjU2LjgyIDEuMjcuODIgMi4xNSAwIDMuMDctMS44NyAzLjc1LTMuNjUgMy45NS4yOS4yNS41NC43My41NCAxLjQ4IDAgMS4wNy0uMDEgMS45My0uMDEgMi4yIDAgLjIxLjE1LjQ2LjU1LjM4QTguMDEzIDguMDEzIDAgMCAwIDE2IDhjMC00LjQyLTMuNTgtOC04LTh6Jy8+PC9zdmc+") no-repeat center / 20px 20px;
+}
+
+/* ---------- Weather forecast page ---------- */
+
+/* Smaller county (group) headers in the left menu */
+ul.weather > li.panel > a {
+    font-size: 13px;
+    padding: 8px 8px;
+}
+
+/* Align the forecast title with the top of the left menu (it's an .alert,
+   which otherwise gets a 10px top margin) */
+#js-content[data-area="weather"] .col-md-10 > h3 {
+    margin-top: 0;
+}
+
+#js-weather-forecast table,
+#js-weather-hourly table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+#js-weather-forecast th,
+#js-weather-forecast td,
+#js-weather-hourly th,
+#js-weather-hourly td {
+    border: 1px solid #ddd;
+    padding: 8px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+#js-weather-forecast th[scope="col"],
+#js-weather-hourly thead th {
+    background: #d9edf7;
+    color: #31708f;
+}
+#js-weather-forecast .image-iconsvg-kratka,
+#js-weather-forecast .image-iconsvg,
+#js-weather-hourly .image-iconsvg-kratka,
+#js-weather-hourly .image-iconsvg {
+    width: 42px;
+    height: 42px;
+}
+#js-weather-forecast .fd-u-color--secondary {
+    color: #c0392b;
+    font-weight: bold;
+}
+#js-weather-forecast .fd-u-color--primary {
+    color: #2980b9;
+    font-weight: bold;
+}
+#js-weather-forecast .js-more-link img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.55;
+}
+#js-weather-forecast .js-more-link:hover img {
+    opacity: 1;
+}
+#js-weather-hourly .js-back {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* ---------- "Add to home screen" banner ---------- */
+.a2hs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    padding: 12px 40px 12px 15px;
+    background: #5290CC;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+}
+.a2hs__text {
+    margin-right: 10px;
+}
+.a2hs__close {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 0 6px;
+    background: none;
+    border: 0;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    opacity: 0.85;
+    cursor: pointer;
+}
+.a2hs__close:hover {
+    opacity: 1;
+}
+.a2hs__steps {
+    text-align: left;
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+/* ============================================================
+   Colour theme
+   Light by default. Dark applies either from the OS setting
+   (prefers-color-scheme) unless the user forced light, or from an
+   explicit [data-theme="dark"] set server-side from the `theme`
+   cookie and toggled by the navbar switch. Component rules read
+   the variables, so light mode is visually unchanged.
+   ============================================================ */
+:root {
+    --ls-bg: #ffffff;
+    --ls-text: #333333;
+    --ls-muted: #888888;
+    --ls-border: #dddddd;
+    --ls-border-soft: #c7eaf4;
+    --ls-link: #337ab7;
+    --ls-link-hover: #23527c;
+    --ls-surface: #f8f8f8;
+    --ls-surface-active: #ffffff;
+    --ls-hover: #f0f0f0;
+    --ls-active: #eeeeee;
+    --ls-navbar-text: #777777;
+    --ls-navbar-text-hover: #333333;
+    --ls-dropdown-bg: #ffffff;
+    --ls-dropdown-hover: #f5f5f5;
+    --ls-jumbo-bg: aliceblue;
+    --ls-jumbo-text: #5290CC;
+    --ls-thead-bg: #d9edf7;
+    --ls-thead-text: #31708f;
+    --ls-modal-bg: #ffffff;
+    --ls-close: #000000;
+    --ls-logo-invert: 0;
+
+    --ls-alert-danger-bg: #f2dede;    --ls-alert-danger-text: #a94442;    --ls-alert-danger-border: #ebccd1;
+    --ls-alert-warning-bg: #fcf8e3;    --ls-alert-warning-text: #8a6d3b;    --ls-alert-warning-border: #faebcc;
+    --ls-alert-success-bg: #dff0d8;    --ls-alert-success-text: #3c763d;    --ls-alert-success-border: #d6e9c6;
+    --ls-alert-info-bg: #d9edf7;       --ls-alert-info-text: #31708f;       --ls-alert-info-border: #bce8f1;
+    --ls-alert-secondary-bg: #e2e3e5;  --ls-alert-secondary-text: #383d41;  --ls-alert-secondary-border: #d6d8db;
+}
+
+/* Dark palette when the OS is dark and the user has not forced light. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --ls-bg: #0f1a24;
+        --ls-text: #c9d4de;
+        --ls-muted: #8b97a2;
+        --ls-border: #2b3b49;
+        --ls-border-soft: #26414d;
+        --ls-link: #6ab0e6;
+        --ls-link-hover: #9ccdf0;
+        --ls-surface: #16232f;
+        --ls-surface-active: #1d2d3a;
+        --ls-hover: #1d2d3a;
+        --ls-active: #223341;
+        --ls-navbar-text: #adb9c4;
+        --ls-navbar-text-hover: #ffffff;
+        --ls-dropdown-bg: #16232f;
+        --ls-dropdown-hover: #223341;
+        --ls-jumbo-bg: #16232f;
+        --ls-jumbo-text: #7fb4dd;
+        --ls-thead-bg: #1d3a4a;
+        --ls-thead-text: #a9d6e5;
+        --ls-modal-bg: #16232f;
+        --ls-close: #c9d4de;
+        --ls-logo-invert: 1;
+
+        --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
+        --ls-alert-warning-bg: #3a3520;    --ls-alert-warning-text: #f0dca0;    --ls-alert-warning-border: #5a5030;
+        --ls-alert-success-bg: #1f3a26;    --ls-alert-success-text: #b6e0bf;    --ls-alert-success-border: #2f5a3a;
+        --ls-alert-info-bg: #1d3a4a;       --ls-alert-info-text: #a9d6e5;       --ls-alert-info-border: #2f5a6f;
+        --ls-alert-secondary-bg: #22282e;  --ls-alert-secondary-text: #c9d4de;  --ls-alert-secondary-border: #333b44;
+    }
+}
+
+/* Same dark palette when the user explicitly picks dark. */
+:root[data-theme="dark"] {
+    --ls-bg: #0f1a24;
+    --ls-text: #c9d4de;
+    --ls-muted: #8b97a2;
+    --ls-border: #2b3b49;
+    --ls-border-soft: #26414d;
+    --ls-link: #6ab0e6;
+    --ls-link-hover: #9ccdf0;
+    --ls-surface: #16232f;
+    --ls-surface-active: #1d2d3a;
+    --ls-hover: #1d2d3a;
+    --ls-active: #223341;
+    --ls-navbar-text: #adb9c4;
+    --ls-navbar-text-hover: #ffffff;
+    --ls-dropdown-bg: #16232f;
+    --ls-dropdown-hover: #223341;
+    --ls-jumbo-bg: #16232f;
+    --ls-jumbo-text: #7fb4dd;
+    --ls-thead-bg: #1d3a4a;
+    --ls-thead-text: #a9d6e5;
+    --ls-modal-bg: #16232f;
+    --ls-close: #c9d4de;
+    --ls-logo-invert: 1;
+
+    --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
+    --ls-alert-warning-bg: #3a3520;    --ls-alert-warning-text: #f0dca0;    --ls-alert-warning-border: #5a5030;
+    --ls-alert-success-bg: #1f3a26;    --ls-alert-success-text: #b6e0bf;    --ls-alert-success-border: #2f5a3a;
+    --ls-alert-info-bg: #1d3a4a;       --ls-alert-info-text: #a9d6e5;       --ls-alert-info-border: #2f5a6f;
+    --ls-alert-secondary-bg: #22282e;  --ls-alert-secondary-text: #c9d4de;  --ls-alert-secondary-border: #333b44;
+}
+
+body { background-color: var(--ls-bg); color: var(--ls-text); }
+a { color: var(--ls-link); }
+a:hover, a:focus { color: var(--ls-link-hover); }
+hr { border-top-color: var(--ls-border); }
+
+/* Navbar */
+.navbar-default { background-color: var(--ls-surface); border-color: var(--ls-border); }
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a { color: var(--ls-navbar-text); }
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus { color: var(--ls-navbar-text-hover); background-color: var(--ls-hover); }
+.navbar-default .navbar-toggle { border-color: var(--ls-border); }
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus { background-color: var(--ls-hover); }
+.navbar-default .navbar-toggle .icon-bar { background-color: var(--ls-navbar-text); }
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form { border-color: var(--ls-border); }
+
+/* Dropdown */
+.dropdown-menu { background-color: var(--ls-dropdown-bg); border-color: var(--ls-border); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35); }
+.dropdown-menu > li > a { color: var(--ls-text); }
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus { background-color: var(--ls-dropdown-hover); color: var(--ls-navbar-text-hover); }
+.dropdown-header { color: var(--ls-muted); }
+
+/* Jumbotron / page title */
+.jumbotron { background: var(--ls-jumbo-bg); color: var(--ls-jumbo-text); }
+
+/* Tabs */
+.nav-tabs { border-bottom-color: var(--ls-border); }
+.nav-tabs > li > a { color: var(--ls-link); }
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus { background-color: var(--ls-hover); border-color: var(--ls-border); }
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus { color: var(--ls-text); background-color: var(--ls-surface-active); border-color: var(--ls-border); border-bottom-color: transparent; }
+.nav-tabs.nav-shadowed li a { background: var(--ls-surface); }
+.nav-tabs.nav-shadowed li.active a { background: var(--ls-surface-active); }
+
+/* Pagination */
+.pagination > li > a,
+.pagination > li > span { background-color: var(--ls-surface-active); border-color: var(--ls-border); color: var(--ls-link); }
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > li > span:hover { background-color: var(--ls-hover); border-color: var(--ls-border); color: var(--ls-link-hover); }
+
+/* Panels (weather accordion) */
+.panel { background-color: var(--ls-surface-active); }
+.panel-default { border-color: var(--ls-border); }
+.panel-default > .panel-heading { background-color: var(--ls-surface); color: var(--ls-text); border-color: var(--ls-border); }
+.panel-group .panel-heading + .panel-collapse > .panel-body { border-top-color: var(--ls-border); }
+
+/* Tables */
+.table { color: var(--ls-text); }
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td { border-top-color: var(--ls-border); }
+.table > thead > tr > th { border-bottom-color: var(--ls-border); }
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td { border-color: var(--ls-border); }
+.table-striped > tbody > tr:nth-of-type(odd) { background-color: var(--ls-surface); }
+.table-hover > tbody > tr:hover { background-color: var(--ls-hover); }
+
+/* Weather left-menu list */
+ul.weather ol { color: var(--ls-muted); }
+ul.weather ol li { border-bottom-color: var(--ls-border-soft); }
+ul.weather ol li.active { background: var(--ls-active); }
+ul.weather ol li.active a { color: var(--ls-text); }
+
+/* Weather custom tables */
+#js-weather-forecast th,
+#js-weather-forecast td,
+#js-weather-hourly th,
+#js-weather-hourly td { border-color: var(--ls-border); }
+#js-weather-forecast th[scope="col"],
+#js-weather-hourly thead th { background: var(--ls-thead-bg); color: var(--ls-thead-text); }
+
+/* Modal (iOS install) */
+.modal-content { background-color: var(--ls-modal-bg); color: var(--ls-text); }
+.modal-header { border-bottom-color: var(--ls-border); }
+.modal-footer { border-top-color: var(--ls-border); }
+.close { color: var(--ls-close); opacity: 0.6; text-shadow: none; }
+.close:hover, .close:focus { color: var(--ls-close); opacity: 1; }
+
+/* Footer */
+footer p { color: var(--ls-muted); }
+
+/* Alerts */
+.alert-danger { color: var(--ls-alert-danger-text); background-color: var(--ls-alert-danger-bg); border-color: var(--ls-alert-danger-border); }
+.alert-warning { color: var(--ls-alert-warning-text); background-color: var(--ls-alert-warning-bg); border-color: var(--ls-alert-warning-border); }
+.alert-success { color: var(--ls-alert-success-text); background-color: var(--ls-alert-success-bg); border-color: var(--ls-alert-success-border); }
+.alert-info { color: var(--ls-alert-info-text); background-color: var(--ls-alert-info-bg); border-color: var(--ls-alert-info-border); }
+.alert-secondary { color: var(--ls-alert-secondary-text); background-color: var(--ls-alert-secondary-bg); border-color: var(--ls-alert-secondary-border); }
+
+/* Navbar logo — its SVG is solid black; invert it to white in dark mode. */
+.navbar-image > img { filter: invert(var(--ls-logo-invert)); }
+
+/* Theme toggle */
+.theme-toggle {
+    float: right;
+    margin: 8px 0;
+    padding: 7px 9px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--ls-navbar-text);
+    cursor: pointer;
+}
+.theme-toggle:hover,
+.theme-toggle:focus { color: var(--ls-navbar-text-hover); background-color: var(--ls-hover); outline: none; }
+.theme-toggle svg { width: 20px; height: 20px; }
+
+/* Show the icon for the mode you'd switch TO: moon in light, sun in dark.
+   Display lives only on the icon rules (no `display` on `.theme-toggle svg`,
+   which would outrank these and keep both icons visible). */
+.theme-toggle__moon { display: block; }
+.theme-toggle__sun { display: none; }
+[data-theme="dark"] .theme-toggle__moon { display: none; }
+[data-theme="dark"] .theme-toggle__sun { display: block; }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle__moon { display: none; }
+    :root:not([data-theme="light"]) .theme-toggle__sun { display: block; }
+}
