@@ -2,9 +2,6 @@
     $pageTitle       = '7-Day Adriatic Weather Forecast — Coastal Towns | Lite Sails';
     $pageDescription = '7-day DHMZ weather forecast for 170+ towns along the Croatian Adriatic coast — temperature, sky, wind and precipitation.';
 
-    include('header.php');
-    include('nav.php');
-
     /*
      * DHMZ (meteo.hr) 7-day forecast lives at:
      * https://meteo.hr/prognoze.php?Code=PULA&id=prognoza&section=prognoze_model&param=7d
@@ -164,9 +161,65 @@
         $cityNames += $group;
     }
 
-    $code = (isset($_GET['code']) && isset($cityNames[$_GET['code']])) ? $_GET['code'] : 'PULA';
+    /*
+     * Which town to show. "None" is a valid state: the page then renders just
+     * the county chooser instead of picking a town for the visitor.
+     *   ?code=…  wins, and is remembered in the `weather_code` cookie;
+     *   otherwise the town remembered from an earlier visit is used.
+     * Both are whitelisted against $cityNames, so neither can inject anything.
+     */
+    $code = '';
 
-    $url = 'https://meteo.hr/prognoze.php?Code=' . rawurlencode($code) . '&id=prognoza&section=prognoze_model&param=7d';
+    if (isset($_GET['code']) && isset($cityNames[$_GET['code']])) {
+        $code = $_GET['code'];
+
+        // Remember the choice for a year (same lifetime as the theme cookie).
+        // This is why the includes below happen after this block — setcookie()
+        // needs to run before header.php starts sending output.
+        if (($_COOKIE['weather_code'] ?? '') !== $code) {
+            setcookie('weather_code', $code, [
+                'expires'  => time() + 31536000,
+                'path'     => '/',
+                'samesite' => 'Lax',
+            ]);
+        }
+    } elseif (isset($_COOKIE['weather_code']) && isset($cityNames[$_COOKIE['weather_code']])) {
+        $code = $_COOKIE['weather_code'];
+    }
+
+    /**
+     * The county accordion: the whole page while no town is picked, and the
+     * left-hand menu next to the forecast once one is. The group holding the
+     * current town starts expanded — with no town picked, all stay collapsed.
+     */
+    function weatherAreaMenu(array $areas, string $code): void {
+        $groupIndex = 0;
+        ?>
+        <ul class="nav nav-stacked weather" id="accordion">
+            <?php foreach ($areas as $group => $places): ?>
+                <?php $panelId = 'acc-group-' . $groupIndex; $hasActive = isset($places[$code]); ?>
+                <li class="panel">
+                    <a class="bg-success" data-toggle="collapse" data-parent="#accordion" href="#<?= $panelId ?>">
+                        <?= $group ?>
+                    </a>
+                    <ol id="<?= $panelId ?>" class="collapse<?= $hasActive ? ' in' : '' ?>">
+                        <?php foreach ($places as $cipher => $name): ?>
+                            <li<?= $cipher === $code ? ' class="active"' : '' ?>>
+                                <a href="?code=<?= rawurlencode($cipher) ?>"><?= $name ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                </li>
+                <?php $groupIndex++; ?>
+            <?php endforeach; ?>
+        </ul>
+        <?php
+    }
+
+    include('header.php');
+    include('nav.php');
+
+    $url = $code === '' ? '' : 'https://meteo.hr/prognoze.php?Code=' . rawurlencode($code) . '&id=prognoza&section=prognoze_model&param=7d';
 
     /**
      * Fetch remote HTML.
@@ -216,7 +269,7 @@
     $forecastTable = '';   // The 7-day summary (#kratka_tablica), translated.
     $hourlyTables  = '';   // Hidden per-hour tables that power the "More…" view.
 
-    $html = fetchHtml($url);
+    $html = $code === '' ? '' : fetchHtml($url);
 
     if ($html) {
         $table = extractTable($html, 'kratka_tablica');
@@ -264,26 +317,25 @@
 
     <h1 class="page-title text-center jumbotron">Weather forecast</h1>
 
+<?php if ($code === ''): ?>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <p class="lead text-center">
+                Pick a town to see its 7-day forecast.
+            </p>
+
+            <div class="weather-chooser">
+                <?php weatherAreaMenu($areas, $code); ?>
+            </div>
+        </div>
+    </div>
+
+<?php else: ?>
+
     <div class="row">
         <div class="col-md-2">
-            <ul class="nav nav-stacked weather" id="accordion">
-                <?php $groupIndex = 0; foreach ($areas as $group => $places): ?>
-                    <?php $panelId = 'acc-group-' . $groupIndex; $hasActive = isset($places[$code]); ?>
-                    <li class="panel">
-                        <a class="bg-success" data-toggle="collapse" data-parent="#accordion" href="#<?= $panelId ?>">
-                            <?= $group ?>
-                        </a>
-                        <ol id="<?= $panelId ?>" class="collapse<?= $hasActive ? ' in' : '' ?>">
-                            <?php foreach ($places as $cipher => $name): ?>
-                                <li<?= $cipher === $code ? ' class="active"' : '' ?>>
-                                    <a href="?code=<?= rawurlencode($cipher) ?>"><?= $name ?></a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ol>
-                    </li>
-                    <?php $groupIndex++; ?>
-                <?php endforeach; ?>
-            </ul>
+            <?php weatherAreaMenu($areas, $code); ?>
         </div>
         <div class="col-md-10">
             <h3 class="text-center alert alert-success">
@@ -319,6 +371,8 @@
             <?php endif; ?>
         </div>
     </div>
+
+<?php endif; ?>
 
 </div>
 

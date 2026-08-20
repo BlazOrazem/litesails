@@ -51,6 +51,9 @@
                 <li class="<?= isPage('winds') ?>">
                     <a href="/winds">Adriatic winds</a>
                 </li>
+                <li class="<?= isPage('tools') ?>">
+                    <a href="/tools">Tools</a>
+                </li>
                 <li class="<?= isPage('knots') ?>">
                     <a href="https://www.animatedknots.com/boating-knots" target="_blank" rel="noopener noreferrer">Nautical knots</a>
                 </li>
