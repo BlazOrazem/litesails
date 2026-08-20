@@ -189,8 +189,15 @@
 
     /**
      * The county accordion: the whole page while no town is picked, and the
-     * left-hand menu next to the forecast once one is. The group holding the
-     * current town starts expanded — with no town picked, all stay collapsed.
+     * left-hand menu next to the forecast once one is.
+     *
+     * The group holding the current town is marked `weather-preopen` rather than
+     * Bootstrap's `in`: CSS opens it from the `md` breakpoint up (sidebar), but
+     * leaves it collapsed on mobile, where the menu stacks above the forecast
+     * and an open list of towns would push the forecast off screen. Doing the
+     * initial state in CSS keeps it flash-free; `initWeather()` then hands the
+     * marker over to a real `in` on desktop. With no town picked, all stay
+     * collapsed at every width.
      */
     function weatherAreaMenu(array $areas, string $code): void {
         $groupIndex = 0;
@@ -202,7 +209,7 @@
                     <a class="bg-success" data-toggle="collapse" data-parent="#accordion" href="#<?= $panelId ?>">
                         <?= $group ?>
                     </a>
-                    <ol id="<?= $panelId ?>" class="collapse<?= $hasActive ? ' in' : '' ?>">
+                    <ol id="<?= $panelId ?>" class="collapse<?= $hasActive ? ' weather-preopen' : '' ?>">
                         <?php foreach ($places as $cipher => $name): ?>
                             <li<?= $cipher === $code ? ' class="active"' : '' ?>>
                                 <a href="?code=<?= rawurlencode($cipher) ?>"><?= $name ?></a>
