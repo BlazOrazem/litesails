@@ -161,6 +161,20 @@ ul.weather > li.panel > a {
     margin-top: 0;
 }
 
+/* The same county menu standing on its own, before a town is picked. Roomier
+   than the sidebar version, which the rule above shrinks to fit 2 columns. */
+.weather-chooser {
+    max-width: 480px;
+    margin: 0 auto 30px;
+}
+.weather-chooser ul.weather > li.panel > a {
+    font-size: 15px;
+    padding: 10px 12px;
+}
+.weather-chooser ul.weather ol li a {
+    padding: 7px 15px 7px 20px;
+}
+
 #js-weather-forecast table,
 #js-weather-hourly table {
     width: 100%;
@@ -248,6 +262,28 @@ ul.weather > li.panel > a {
     margin-bottom: 0;
 }
 
+/* ---------- Tools page ---------- */
+
+.converter label {
+    font-weight: normal;
+}
+.converter > div {
+    margin-bottom: 10px;
+}
+.converter__equals {
+    text-align: center;
+    font-size: 24px;
+}
+@media (min-width: 768px) {
+    /* Line the "=" up with the inputs, i.e. below the labels. */
+    .converter__equals {
+        padding-top: 27px;
+    }
+}
+.converter__note {
+    margin-bottom: 0;
+}
+
 /* ============================================================
    Colour theme
    Light by default. Dark applies either from the OS setting
@@ -278,6 +314,9 @@ ul.weather > li.panel > a {
     --ls-thead-text: #31708f;
     --ls-modal-bg: #ffffff;
     --ls-close: #000000;
+    --ls-input-bg: #ffffff;
+    --ls-input-text: #555555;
+    --ls-input-border: #cccccc;
     --ls-logo-invert: 0;
 
     --ls-alert-danger-bg: #f2dede;    --ls-alert-danger-text: #a94442;    --ls-alert-danger-border: #ebccd1;
@@ -311,6 +350,9 @@ ul.weather > li.panel > a {
         --ls-thead-text: #a9d6e5;
         --ls-modal-bg: #16232f;
         --ls-close: #c9d4de;
+        --ls-input-bg: #13202b;
+        --ls-input-text: #d7e1ea;
+        --ls-input-border: #2b3b49;
         --ls-logo-invert: 1;
 
         --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
@@ -344,6 +386,9 @@ ul.weather > li.panel > a {
     --ls-thead-text: #a9d6e5;
     --ls-modal-bg: #16232f;
     --ls-close: #c9d4de;
+    --ls-input-bg: #13202b;
+    --ls-input-text: #d7e1ea;
+    --ls-input-border: #2b3b49;
     --ls-logo-invert: 1;
 
     --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
@@ -458,6 +503,14 @@ footer p { color: var(--ls-muted); }
 .alert-success { color: var(--ls-alert-success-text); background-color: var(--ls-alert-success-bg); border-color: var(--ls-alert-success-border); }
 .alert-info { color: var(--ls-alert-info-text); background-color: var(--ls-alert-info-bg); border-color: var(--ls-alert-info-border); }
 .alert-secondary { color: var(--ls-alert-secondary-text); background-color: var(--ls-alert-secondary-bg); border-color: var(--ls-alert-secondary-border); }
+
+/* Form controls (tools page converters) */
+.form-control { background-color: var(--ls-input-bg); color: var(--ls-input-text); border-color: var(--ls-input-border); }
+.form-control::placeholder { color: var(--ls-muted); opacity: 1; }
+.input-group-addon { background-color: var(--ls-surface); border-color: var(--ls-input-border); color: var(--ls-muted); }
+.help-block { color: var(--ls-muted); }
+.converter label,
+.converter__equals { color: var(--ls-muted); }
 
 /* Navbar logo — its SVG is solid black; invert it to white in dark mode. */
 .navbar-image > img { filter: invert(var(--ls-logo-invert)); }

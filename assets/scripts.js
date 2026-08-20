@@ -21,6 +21,10 @@ let LiteSails = (function () {
             if (area == 'sea') {
                 LiteSails.initSea();
             }
+
+            if (area == 'tools') {
+                LiteSails.initTools();
+            }
         },
 
         // Register the service worker (required for the install prompt + offline).
@@ -390,6 +394,70 @@ let LiteSails = (function () {
             // Initial state: only "Play" visible, first day shown.
             $stop.hide();
             show(0);
+        },
+
+        // Tools page: live unit converters (no submit button — they convert as
+        // you type). Writing .val() programmatically doesn't fire `input`, so
+        // the fields can feed each other without looping.
+        initTools: function () {
+            // Distance — base unit is the kilometer.
+            LiteSails.initConverter([
+                { selector: '#js-conv-km', factor: 1 },
+                { selector: '#js-conv-nm', factor: 1.852 }
+            ]);
+
+            // Wind speed — base unit is m/s, since that's what meteo.hr
+            // publishes. One knot is 1.852 km/h.
+            LiteSails.initConverter([
+                { selector: '#js-wind-kmh', factor: 1 / 3.6 },
+                { selector: '#js-wind-ms',  factor: 1 },
+                { selector: '#js-wind-kn',  factor: 1.852 / 3.6 }
+            ]);
+        },
+
+        // Live converter across any number of fields. `factor` is how many base
+        // units one of that field's units is worth, so the field with factor 1
+        // is the base (e.g. 1 NM = 1.852 km). Typing in any field fills all the
+        // others: value → base → each other unit.
+        initConverter: function (fields) {
+            var inputs = [];
+
+            $.each(fields, function (i, field) {
+                var $input = $(field.selector);
+                if ($input.length) {
+                    inputs.push({ $el: $input, factor: field.factor });
+                }
+            });
+
+            if (inputs.length < 2) {
+                return;
+            }
+
+            // Accept a comma as the decimal separator (and stray spaces), the
+            // way a Croatian/Slovenian keyboard would type it.
+            function parse(value) {
+                var number = parseFloat($.trim(value).replace(',', '.').replace(/\s/g, ''));
+                return isFinite(number) ? number : null;
+            }
+
+            // Round to millimetre-ish precision and drop trailing zeros, so
+            // 1852 km reads as "1000", not "1000.0000".
+            function format(number) {
+                return String(parseFloat(number.toFixed(4)));
+            }
+
+            $.each(inputs, function (i, source) {
+                source.$el.on('input', function () {
+                    var value = parse(source.$el.val());
+                    var base = value === null ? null : value * source.factor;
+
+                    $.each(inputs, function (j, target) {
+                        if (target !== source) {
+                            target.$el.val(base === null ? '' : format(base / target.factor));
+                        }
+                    });
+                });
+            });
         },
 
         camelize: function(str) {
