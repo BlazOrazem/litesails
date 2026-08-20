@@ -248,6 +248,19 @@ let LiteSails = (function () {
         },
 
         initWeather: function () {
+            // Hand the server-rendered accordion state over to Bootstrap. The
+            // county holding the selected town carries `weather-preopen`, which
+            // CSS opens from the `md` breakpoint up and leaves collapsed on
+            // mobile (see style.css). Turning it into a real `in` on desktop
+            // means Bootstrap knows the panel is open, so the first tap on the
+            // header closes it instead of re-opening it. Runs before the early
+            // return below: the menu is on the page even when the forecast
+            // itself failed to load.
+            var $preopen = $('#accordion .weather-preopen').removeClass('weather-preopen');
+            if (!window.matchMedia || window.matchMedia('(min-width: 992px)').matches) {
+                $preopen.addClass('in');
+            }
+
             var $forecast = $('#js-weather-forecast');
             var $hourly = $('#js-weather-hourly');
             var $source = $('#js-weather-source');

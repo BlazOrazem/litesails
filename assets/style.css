@@ -175,6 +175,20 @@ ul.weather > li.panel > a {
     padding: 7px 15px 7px 20px;
 }
 
+/* The county holding the selected town starts open, but only from the `md`
+   breakpoint up — the same width at which the menu becomes a col-md-2 sidebar
+   beside the forecast. Below that it's a full-width block stacked above the
+   forecast, so an open list of towns would push the forecast off the screen.
+   Rendering the initial state in CSS (rather than letting JS collapse an
+   already-painted menu) keeps it flash-free, since the bundle loads at the end
+   of <body>. initWeather() swaps this marker for Bootstrap's own `in` on
+   desktop, so toggling behaves normally from the first tap. */
+@media (min-width: 992px) {
+    ul.weather ol.collapse.weather-preopen {
+        display: block;
+    }
+}
+
 #js-weather-forecast table,
 #js-weather-hourly table {
     width: 100%;
@@ -312,6 +326,8 @@ ul.weather > li.panel > a {
     --ls-jumbo-text: #5290CC;
     --ls-thead-bg: #d9edf7;
     --ls-thead-text: #31708f;
+    --ls-bg-success: #dff0d8;
+    --ls-bg-info: #d9edf7;
     --ls-modal-bg: #ffffff;
     --ls-close: #000000;
     --ls-input-bg: #ffffff;
@@ -348,6 +364,8 @@ ul.weather > li.panel > a {
         --ls-jumbo-text: #7fb4dd;
         --ls-thead-bg: #1d3a4a;
         --ls-thead-text: #a9d6e5;
+        --ls-bg-success: #1f3a26;
+        --ls-bg-info: #1d3a4a;
         --ls-modal-bg: #16232f;
         --ls-close: #c9d4de;
         --ls-input-bg: #13202b;
@@ -384,6 +402,8 @@ ul.weather > li.panel > a {
     --ls-jumbo-text: #7fb4dd;
     --ls-thead-bg: #1d3a4a;
     --ls-thead-text: #a9d6e5;
+    --ls-bg-success: #1f3a26;
+    --ls-bg-info: #1d3a4a;
     --ls-modal-bg: #16232f;
     --ls-close: #c9d4de;
     --ls-input-bg: #13202b;
@@ -470,14 +490,28 @@ hr { border-top-color: var(--ls-border); }
 .table-bordered > tbody > tr > th,
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td { border-color: var(--ls-border); }
+.table > tbody + tbody { border-top-color: var(--ls-border); }
+.table-bordered > tfoot > tr > th,
+.table-bordered > tfoot > tr > td { border-color: var(--ls-border); }
 .table-striped > tbody > tr:nth-of-type(odd) { background-color: var(--ls-surface); }
 .table-hover > tbody > tr:hover { background-color: var(--ls-hover); }
+/* Contextual header rows — sea.php marks its <thead> rows .bg-info, for which
+   Bootstrap hardcodes a pale #d9edf7 that glares against a dark table (and,
+   filling the whole header band, reads as bright borders). The th text keeps
+   --ls-text, which clears AA on both tints, so only the background is themed. */
+tr.bg-info { background-color: var(--ls-bg-info); }
 
 /* Weather left-menu list */
 ul.weather ol { color: var(--ls-muted); }
 ul.weather ol li { border-bottom-color: var(--ls-border-soft); }
 ul.weather ol li.active { background: var(--ls-active); }
 ul.weather ol li.active a { color: var(--ls-text); }
+
+/* County (region) headers. Bootstrap's .bg-success is a pale #dff0d8 that is far
+   too bright in dark mode; --ls-bg-success keeps that exact tint in light and
+   drops to a deep green in dark. Background only — the header is a link, so its
+   text keeps --ls-link and the usual hover feedback. */
+ul.weather > li.panel > a.bg-success { background-color: var(--ls-bg-success); }
 
 /* Weather custom tables */
 #js-weather-forecast th,
