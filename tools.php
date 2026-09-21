@@ -1,6 +1,6 @@
 <?php
-    $pageTitle       = 'Nautical Tools — Distance and Wind Speed Converters | Lite Sails';
-    $pageDescription = 'Handy tools for sailors: convert kilometers to nautical miles, and wind speed between km/h, m/s and knots — instantly as you type.';
+    $pageTitle       = 'Nautical Tools — Distance, Boat Length and Wind Speed Converters | Lite Sails';
+    $pageDescription = 'Handy tools for sailors: convert kilometers to nautical miles, boat length between meters and feet, and wind speed between km/h, m/s and knots — instantly as you type.';
 
     include('header.php');
     include('nav.php');
@@ -42,6 +42,41 @@
                     <p class="help-block converter__note">
                         One nautical mile is exactly <strong>1.852 km</strong> &mdash; the length of one minute of
                         latitude, which is why charts and sailors measure distance in it.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Boat length &mdash; meters &#8660; feet</h2>
+                </div>
+                <div class="panel-body">
+                    <p class="text-muted">Type into either field &mdash; the other one converts instantly.</p>
+
+                    <div class="row converter">
+                        <div class="col-sm-5">
+                            <label for="js-len-m">Meters</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="js-len-m"
+                                       inputmode="decimal" autocomplete="off" placeholder="0">
+                                <span class="input-group-addon">m</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 converter__equals" aria-hidden="true">=</div>
+                        <div class="col-sm-5">
+                            <label for="js-len-ft">Feet</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="js-len-ft"
+                                       inputmode="decimal" autocomplete="off" placeholder="0">
+                                <span class="input-group-addon">ft</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="help-block converter__note">
+                        One foot is exactly <strong>0.3048 m</strong>. Boats are advertised in feet
+                        (a &ldquo;40.1&nbsp;ft&rdquo; hull is 12.22&nbsp;m), while Adriatic berths and
+                        price lists are usually quoted per meter of length &mdash; so it pays to know both.
                     </p>
                 </div>
             </div>

@@ -419,6 +419,13 @@ let LiteSails = (function () {
                 { selector: '#js-conv-nm', factor: 1.852 }
             ]);
 
+            // Boat length — base unit is the meter; one foot is exactly
+            // 0.3048 m. Boats are sold in feet, berths priced per meter.
+            LiteSails.initConverter([
+                { selector: '#js-len-m',  factor: 1 },
+                { selector: '#js-len-ft', factor: 0.3048 }
+            ]);
+
             // Wind speed — base unit is m/s, since that's what meteo.hr
             // publishes. One knot is 1.852 km/h.
             LiteSails.initConverter([
