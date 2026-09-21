@@ -223,41 +223,13 @@
         <?php
     }
 
+    // Shared meteo.hr fetch + cache helpers (dhmzFetch, dhmzCachePath).
+    include('dhmz.php');
+
     include('header.php');
     include('nav.php');
 
     $url = $code === '' ? '' : 'https://meteo.hr/prognoze.php?Code=' . rawurlencode($code) . '&id=prognoza&section=prognoze_model&param=7d';
-
-    /**
-     * Fetch remote HTML.
-     *
-     * Prefers cURL with full TLS verification. If that fails (e.g. a server with
-     * a misconfigured CA bundle), it retries without peer verification so the
-     * page still works — acceptable here since we only read public forecast HTML.
-     * Falls back to file_get_contents when cURL is unavailable.
-     */
-    function fetchHtml($url) {
-        if (function_exists('curl_init')) {
-            foreach ([true, false] as $verify) {
-                $ch = curl_init($url);
-                curl_setopt_array($ch, [
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_TIMEOUT        => 15,
-                    CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LiteSails/1.0)',
-                    CURLOPT_SSL_VERIFYPEER => $verify,
-                    CURLOPT_SSL_VERIFYHOST => $verify ? 2 : 0,
-                ]);
-                $html = curl_exec($ch);
-                curl_close($ch);
-                if ($html !== false && $html !== '') {
-                    return $html;
-                }
-            }
-        }
-
-        return @file_get_contents($url);
-    }
 
     /**
      * Pull a single <table> (by id) out of an HTML string, markup untouched.
@@ -276,7 +248,12 @@
     $forecastTable = '';   // The 7-day summary (#kratka_tablica), translated.
     $hourlyTables  = '';   // Hidden per-hour tables that power the "More…" view.
 
-    $html = $code === '' ? '' : fetchHtml($url);
+    // The model forecast is per-town, so each town caches under its own file on
+    // the shared 30 min TTL. The code is a whitelisted key of $cityNames but it
+    // is hashed anyway, since the town names carry spaces and diacritics that a
+    // filename would have to strip — and stripping could collide two towns onto
+    // one cache.
+    $html = $code === '' ? '' : dhmzFetch($url, dhmzCachePath('weather_' . md5($code)));
 
     if ($html) {
         $table = extractTable($html, 'kratka_tablica');

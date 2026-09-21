@@ -5,6 +5,9 @@
     // Wave/map images load from prognoza.hr via JS — warm the connection early.
     $preconnect = ['https://prognoza.hr'];
 
+    // Shared meteo.hr fetch + cache helpers (dhmzFetch, dhmzCachePath).
+    include('dhmz.php');
+
     include('header.php');
     include('nav.php');
 
@@ -13,62 +16,6 @@
     // DOM extension (no third-party dependency).
     $forecastUrl    = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
     $temperatureUrl = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
-
-    /**
-     * Fetch a URL through a filesystem cache (default 30 min TTL).
-     *
-     * Serves the cache while it's fresh; otherwise fetches live (cURL, retrying
-     * without TLS verification if the host's CA bundle is misconfigured, then a
-     * file_get_contents fallback) and rewrites the cache. If the live fetch
-     * fails, falls back to a stale cache so the page still renders.
-     */
-    function dhmzFetch($url, $cacheFile, $ttl = 1800) {
-        if (is_file($cacheFile) && (time() - filemtime($cacheFile)) < $ttl) {
-            $cached = file_get_contents($cacheFile);
-            if ($cached !== false && $cached !== '') {
-                return $cached;
-            }
-        }
-
-        $html = false;
-        if (function_exists('curl_init')) {
-            foreach ([true, false] as $verify) {
-                $ch = curl_init($url);
-                curl_setopt_array($ch, [
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_TIMEOUT        => 15,
-                    CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; LiteSails/1.0)',
-                    CURLOPT_SSL_VERIFYPEER => $verify,
-                    CURLOPT_SSL_VERIFYHOST => $verify ? 2 : 0,
-                ]);
-                $html = curl_exec($ch);
-                curl_close($ch);
-                if ($html !== false && $html !== '') {
-                    break;
-                }
-            }
-        }
-
-        if ($html === false || $html === '') {
-            $html = @file_get_contents($url);
-        }
-
-        if ($html !== false && $html !== '') {
-            @file_put_contents($cacheFile, $html, LOCK_EX);
-            return $html;
-        }
-
-        // Live fetch failed — fall back to a stale cache if one exists.
-        if (is_file($cacheFile)) {
-            $stale = file_get_contents($cacheFile);
-            if ($stale !== false && $stale !== '') {
-                return $stale;
-            }
-        }
-
-        return '';
-    }
 
     /** Load an HTML string into a DOMXPath (UTF-8 safe), or null on empty input. */
     function seaXPath($html) {
@@ -131,7 +78,7 @@
         return $data;
     }
 
-    $forecastXPath = seaXPath(dhmzFetch($forecastUrl, __DIR__ . '/_dhmz_forecast.html'));
+    $forecastXPath = seaXPath(dhmzFetch($forecastUrl, dhmzCachePath('forecast')));
 ?>
 
 <div id="js-content" class="container" data-area="sea">
@@ -340,7 +287,7 @@
             <div class="row">
                 <div class="col col-xs-12 center-block">
                     <?php
-                        $temperatureXPath = seaXPath(dhmzFetch($temperatureUrl, __DIR__ . '/_dhmz_temperature.html'));
+                        $temperatureXPath = seaXPath(dhmzFetch($temperatureUrl, dhmzCachePath('temperature')));
                         $table = $temperatureXPath
                             ? $temperatureXPath->query("//table[@id='table-aktualni-podaci']")->item(0)
                             : null;
