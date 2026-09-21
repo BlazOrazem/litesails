@@ -3,3 +3,5 @@
 _dhmz_*
 vendor
 node_modules
+cache/*
+!cache/.gitkeep

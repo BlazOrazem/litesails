@@ -10,7 +10,7 @@ Options -Indexes
 </IfModule>
 
 # Deny direct access to project/config files that should never be web-served.
-<FilesMatch "^(package(-lock)?\.json|composer\.(json|lock)|build\.js|_dhmz_.*)$">
+<FilesMatch "^(package(-lock)?\.json|composer\.(json|lock)|build\.js|dhmz\.php|_dhmz_.*)$">
     Require all denied
 </FilesMatch>
 
