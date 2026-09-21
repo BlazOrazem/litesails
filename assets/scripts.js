@@ -427,19 +427,83 @@ let LiteSails = (function () {
             ]);
 
             // Wind speed — base unit is m/s, since that's what meteo.hr
-            // publishes. One knot is 1.852 km/h.
+            // publishes. One knot is 1.852 km/h. The callback gets that base
+            // value and drives the Beaufort read-out: force is a non-linear
+            // banding, not a factor, so it can't be a fourth field here.
             LiteSails.initConverter([
                 { selector: '#js-wind-kmh', factor: 1 / 3.6 },
                 { selector: '#js-wind-ms',  factor: 1 },
                 { selector: '#js-wind-kn',  factor: 1.852 / 3.6 }
-            ]);
+            ], LiteSails.showBeaufort);
+        },
+
+        // Beaufort forces by lower bound in knots. The scale is defined in
+        // knots and that is what boat instruments read, so knots decide the
+        // force here; the m/s column of the reference table is the scale's
+        // conventional rounding of these same bands.
+        beaufortBands: [
+            { force: 0,  from: 0,  label: 'Calm' },
+            { force: 1,  from: 1,  label: 'Light air' },
+            { force: 2,  from: 4,  label: 'Light breeze' },
+            { force: 3,  from: 7,  label: 'Gentle breeze' },
+            { force: 4,  from: 11, label: 'Moderate breeze' },
+            { force: 5,  from: 17, label: 'Fresh breeze' },
+            { force: 6,  from: 22, label: 'Strong breeze' },
+            { force: 7,  from: 28, label: 'Near gale' },
+            { force: 8,  from: 34, label: 'Gale' },
+            { force: 9,  from: 41, label: 'Strong gale' },
+            { force: 10, from: 48, label: 'Storm' },
+            { force: 11, from: 56, label: 'Violent storm' },
+            { force: 12, from: 64, label: 'Hurricane' }
+        ],
+
+        // Highest band the speed reaches. `ms` comes in as the wind converter's
+        // base unit (m/s) and is rounded to whole knots first, since the bands
+        // are whole knots. Direction is meaningless for a force, so a negative
+        // value reads as its magnitude.
+        beaufortFor: function (ms) {
+            var bands = LiteSails.beaufortBands;
+            var knots = Math.round(Math.abs(ms) * 3.6 / 1.852);
+
+            for (var i = bands.length - 1; i > 0; i--) {
+                if (knots >= bands[i].from) {
+                    return bands[i];
+                }
+            }
+
+            return bands[0];
+        },
+
+        // Paint the read-out under the wind converter and mark the matching row
+        // of the reference table. `ms` is null when the fields are empty.
+        showBeaufort: function (ms) {
+            var $readout = $('#js-wind-bf');
+            if (!$readout.length) {
+                return;
+            }
+
+            var $rows = $('#js-beaufort-table').find('tbody > tr');
+            var band = ms === null ? null : LiteSails.beaufortFor(ms);
+
+            $readout.toggleClass('beaufort-readout--empty', band === null);
+            $('#js-wind-bf-force').text(band === null ? '\u2014' : band.force + ' Bf');
+            $('#js-wind-bf-label').text(band === null ?
+                'Enter a wind speed to see its Beaufort force.' : band.label);
+
+            $rows.removeClass('is-active');
+            if (band !== null) {
+                $rows.filter('[data-force="' + band.force + '"]').addClass('is-active');
+            }
         },
 
         // Live converter across any number of fields. `factor` is how many base
         // units one of that field's units is worth, so the field with factor 1
         // is the base (e.g. 1 NM = 1.852 km). Typing in any field fills all the
         // others: value → base → each other unit.
-        initConverter: function (fields) {
+        // The optional `onBase` callback gets that base value (null when the
+        // fields are empty), for a read-out that is not itself a linear unit
+        // -- see showBeaufort().
+        initConverter: function (fields, onBase) {
             var inputs = [];
 
             $.each(fields, function (i, field) {
@@ -476,8 +540,28 @@ let LiteSails = (function () {
                             target.$el.val(base === null ? '' : format(base / target.factor));
                         }
                     });
+
+                    if (onBase) {
+                        onBase(base);
+                    }
                 });
             });
+
+            // A browser can restore typed values across a reload (Firefox
+            // does), so start the read-out from whatever is already in the
+            // fields. Reads only — writing here would fight that restore.
+            if (onBase) {
+                var restored = null;
+
+                $.each(inputs, function (i, input) {
+                    var value = parse(input.$el.val());
+                    if (restored === null && value !== null) {
+                        restored = value * input.factor;
+                    }
+                });
+
+                onBase(restored);
+            }
         },
 
         camelize: function(str) {

@@ -298,6 +298,33 @@ ul.weather > li.panel > a {
     margin-bottom: 0;
 }
 
+
+/* Live Beaufort read-out under the wind speed converter. */
+.beaufort-readout {
+    margin: 5px 0 15px;
+    padding: 10px 15px;
+    border: 1px solid var(--ls-border);
+    border-radius: 4px;
+    background-color: var(--ls-surface);
+}
+.beaufort-readout__force {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+}
+.beaufort-readout__label {
+    margin-left: 8px;
+}
+.beaufort-readout--empty .beaufort-readout__force {
+    font-weight: normal;
+}
+.beaufort-table > tbody > tr > td:first-child {
+    font-weight: bold;
+}
+/* Row matching the speed being typed. Beats .table-striped on specificity. */
+.beaufort-table > tbody > tr.is-active > td {
+    background-color: var(--ls-bg-success);
+}
 /* ============================================================
    Colour theme
    Light by default. Dark applies either from the OS setting
@@ -544,7 +571,9 @@ footer p { color: var(--ls-muted); }
 .input-group-addon { background-color: var(--ls-surface); border-color: var(--ls-input-border); color: var(--ls-muted); }
 .help-block { color: var(--ls-muted); }
 .converter label,
-.converter__equals { color: var(--ls-muted); }
+.converter__equals,
+.beaufort-readout__label,
+.beaufort-readout--empty .beaufort-readout__force { color: var(--ls-muted); }
 
 /* Navbar logo — its SVG is solid black; invert it to white in dark mode. */
 .navbar-image > img { filter: invert(var(--ls-logo-invert)); }
