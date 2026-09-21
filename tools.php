@@ -1,6 +1,6 @@
 <?php
-    $pageTitle       = 'Nautical Tools — Wind Speed, Beaufort, Distance and Boat Length | Lite Sails';
-    $pageDescription = 'Handy tools for sailors: convert kilometers to nautical miles, boat length between meters and feet, and wind speed between km/h, m/s and knots — instantly as you type, with the Beaufort force for any speed.';
+    $pageTitle       = 'Nautical Tools — Wind Speed, Beaufort, Passage Time and Converters | Lite Sails';
+    $pageDescription = 'Handy tools for sailors: convert kilometers to nautical miles, boat length between meters and feet, and wind speed between km/h, m/s and knots — instantly as you type, with the Beaufort force for any speed and a passage-time calculator.';
 
     include('header.php');
     include('nav.php');
@@ -42,6 +42,49 @@
                     <p class="help-block converter__note">
                         One nautical mile is exactly <strong>1.852 km</strong> &mdash; the length of one minute of
                         latitude, which is why charts and sailors measure distance in it.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Passage time &mdash; how long a leg takes</h2>
+                </div>
+                <div class="panel-body">
+                    <p class="text-muted">How far you're going, and how fast you expect to make good.</p>
+
+                    <div class="row converter">
+                        <div class="col-sm-5">
+                            <label for="js-pass-nm">Distance</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="js-pass-nm"
+                                       inputmode="decimal" autocomplete="off" placeholder="0">
+                                <span class="input-group-addon">NM</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <label for="js-pass-kn">
+                                Boat speed &mdash; <span id="js-pass-kn-out">5.0</span> kn
+                            </label>
+                            <input type="range" class="passage__speed" id="js-pass-kn"
+                                   min="1" max="20" step="0.1" value="5">
+                            <span class="passage__scale" aria-hidden="true">
+                                <span>1</span><span>20</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="passage__result">
+                        <span class="passage__time" id="js-pass-time">&mdash;</span>
+                        <span class="passage__caption">under way</span>
+                    </div>
+
+                    <p class="help-block converter__note">
+                        Speed through the water only &mdash; it says nothing about current, and along
+                        the Adriatic islands a channel can run a knot or more against you. A passage
+                        planned at <strong>5 kn</strong> is the usual cruising-yacht guess: that's
+                        <strong>5 NM every hour</strong>, so a 30 NM hop is a six-hour day. Kilometers
+                        convert to NM in the first panel.
                     </p>
                 </div>
             </div>

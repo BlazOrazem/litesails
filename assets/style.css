@@ -299,6 +299,37 @@ ul.weather > li.panel > a {
 }
 
 
+/* Passage time: distance field + speed slider. */
+.passage__speed {
+    display: block;
+    width: 100%;
+    height: 34px;          /* match .form-control, so the row lines up */
+    margin: 0;
+    padding: 0;
+    /* Themes the track and thumb without restyling the whole control. */
+    accent-color: var(--ls-link);
+}
+.passage__scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+.passage__result {
+    margin: 5px 0 15px;
+    padding: 10px 15px;
+    border: 1px solid var(--ls-border);
+    border-radius: 4px;
+    background-color: var(--ls-surface);
+}
+.passage__time {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+}
+.passage__caption {
+    margin-left: 8px;
+}
+
 /* Live Beaufort read-out under the wind speed converter. */
 .beaufort-readout {
     margin: 5px 0 15px;
@@ -573,7 +604,9 @@ footer p { color: var(--ls-muted); }
 .converter label,
 .converter__equals,
 .beaufort-readout__label,
-.beaufort-readout--empty .beaufort-readout__force { color: var(--ls-muted); }
+.beaufort-readout--empty .beaufort-readout__force,
+.passage__scale,
+.passage__caption { color: var(--ls-muted); }
 
 /* Navbar logo — its SVG is solid black; invert it to white in dark mode. */
 .navbar-image > img { filter: invert(var(--ls-logo-invert)); }

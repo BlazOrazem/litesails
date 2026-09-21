@@ -435,6 +435,76 @@ let LiteSails = (function () {
                 { selector: '#js-wind-ms',  factor: 1 },
                 { selector: '#js-wind-kn',  factor: 1.852 / 3.6 }
             ], LiteSails.showBeaufort);
+
+            LiteSails.initPassage();
+        },
+
+        // Accept a comma as the decimal separator (and stray spaces), the way a
+        // Croatian/Slovenian keyboard would type it. Returns null for anything
+        // that isn't a finite number, so callers can tell "empty" from "zero".
+        parseNumber: function (value) {
+            var number = parseFloat($.trim(value).replace(',', '.').replace(/\s/g, ''));
+            return isFinite(number) ? number : null;
+        },
+
+        // Passage time: distance in NM at a speed in knots, i.e. hours = NM/kn.
+        // Speed is a slider rather than a field because it's a guess you nudge
+        // ("what if we only make 4.5?"), not a figure you know to two decimals.
+        initPassage: function () {
+            var $distance = $('#js-pass-nm');
+            var $speed    = $('#js-pass-kn');
+            if (!$distance.length || !$speed.length) {
+                return;
+            }
+
+            var $speedOut = $('#js-pass-kn-out');
+            var $result   = $('#js-pass-time');
+
+            function update() {
+                var distance = LiteSails.parseNumber($distance.val());
+                var speed    = parseFloat($speed.val());
+
+                $speedOut.text(speed.toFixed(1));
+
+                if (distance === null || distance < 0 || !(speed > 0)) {
+                    $result.text('\u2014');
+                    return;
+                }
+
+                $result.text(LiteSails.formatDuration(distance / speed));
+            }
+
+            $distance.on('input', update);
+            // `input` fires while dragging, `change` catches the keyboard.
+            $speed.on('input change', update);
+
+            update();
+        },
+
+        // Hours as "6 h 55 min", the way a passage gets talked about. Rounds to
+        // the minute, and carries 60 min up to the next hour so nothing ever
+        // reads "6 h 60 min".
+        formatDuration: function (hours) {
+            var total   = Math.round(hours * 60);
+            var days    = Math.floor(total / 1440);
+            var rest    = total % 1440;
+            var whole   = Math.floor(rest / 60);
+            var minutes = rest % 60;
+            var out     = [];
+
+            // Past a day the hour count stops being readable at a glance, so
+            // an overnight passage reads "1 d 6 h" instead of "30 h".
+            if (days) {
+                out.push(days + ' d');
+            }
+            if (whole) {
+                out.push(whole + ' h');
+            }
+            if (minutes || !out.length) {
+                out.push(minutes + ' min');
+            }
+
+            return out.join(' ');
         },
 
         // Beaufort forces by lower bound in knots. The scale is defined in
@@ -517,12 +587,7 @@ let LiteSails = (function () {
                 return;
             }
 
-            // Accept a comma as the decimal separator (and stray spaces), the
-            // way a Croatian/Slovenian keyboard would type it.
-            function parse(value) {
-                var number = parseFloat($.trim(value).replace(',', '.').replace(/\s/g, ''));
-                return isFinite(number) ? number : null;
-            }
+            var parse = LiteSails.parseNumber;
 
             // Round to millimetre-ish precision and drop trailing zeros, so
             // 1852 km reads as "1000", not "1000.0000".
