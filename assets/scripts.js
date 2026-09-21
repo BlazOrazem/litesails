@@ -458,7 +458,8 @@ let LiteSails = (function () {
             }
 
             var $speedOut = $('#js-pass-kn-out');
-            var $result   = $('#js-pass-time');
+            var $time     = $('#js-pass-time');
+            var $arrival  = $('#js-pass-eta');
 
             function update() {
                 var distance = LiteSails.parseNumber($distance.val());
@@ -467,11 +468,17 @@ let LiteSails = (function () {
                 $speedOut.text(speed.toFixed(1));
 
                 if (distance === null || distance < 0 || !(speed > 0)) {
-                    $result.text('\u2014');
+                    $time.text('\u2014');
+                    $arrival.text('\u2014');
                     return;
                 }
 
-                $result.text(LiteSails.formatDuration(distance / speed));
+                // Round once and feed both read-outs from it, so the duration
+                // and the arrival clock can never disagree by a minute.
+                var minutes = Math.round(distance / speed * 60);
+
+                $time.text(LiteSails.formatDuration(minutes));
+                $arrival.text(LiteSails.formatArrival(minutes));
             }
 
             $distance.on('input', update);
@@ -481,15 +488,13 @@ let LiteSails = (function () {
             update();
         },
 
-        // Hours as "6 h 55 min", the way a passage gets talked about. Rounds to
-        // the minute, and carries 60 min up to the next hour so nothing ever
-        // reads "6 h 60 min".
-        formatDuration: function (hours) {
-            var total   = Math.round(hours * 60);
-            var days    = Math.floor(total / 1440);
-            var rest    = total % 1440;
+        // Whole minutes as "6 h 55 min", the way a passage gets talked about.
+        // Carries 60 min up to the next hour so nothing reads "6 h 60 min".
+        formatDuration: function (minutes) {
+            var days    = Math.floor(minutes / 1440);
+            var rest    = minutes % 1440;
             var whole   = Math.floor(rest / 60);
-            var minutes = rest % 60;
+            var mins    = rest % 60;
             var out     = [];
 
             // Past a day the hour count stops being readable at a glance, so
@@ -500,11 +505,30 @@ let LiteSails = (function () {
             if (whole) {
                 out.push(whole + ' h');
             }
-            if (minutes || !out.length) {
-                out.push(minutes + ' min');
+            if (mins || !out.length) {
+                out.push(mins + ' min');
             }
 
             return out.join(' ');
+        },
+
+        // Clock time you'd tie up at if you slipped the lines now: "18:05", in
+        // 24 h local time. A passage running past midnight gets a day offset,
+        // since "06:30" on its own would be read as this morning.
+        formatArrival: function (minutes) {
+            var now     = new Date();
+            var arrival = new Date(now.getTime() + minutes * 60000);
+            var clock   = ('0' + arrival.getHours()).slice(-2) + ':' +
+                          ('0' + arrival.getMinutes()).slice(-2);
+
+            // Count calendar days crossed, not elapsed ones — arriving 00:30
+            // tonight is tomorrow, an hour from now. Rounding absorbs the
+            // 23/25-hour day that a DST switch makes.
+            var midnightToday   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            var midnightArrival = new Date(arrival.getFullYear(), arrival.getMonth(), arrival.getDate());
+            var days = Math.round((midnightArrival - midnightToday) / 86400000);
+
+            return days > 0 ? clock + ' +' + days + ' d' : clock;
         },
 
         // Beaufort forces by lower bound in knots. The scale is defined in

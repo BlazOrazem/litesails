@@ -315,20 +315,40 @@ ul.weather > li.panel > a {
     font-size: 12px;
 }
 .passage__result {
+    display: flex;
     margin: 5px 0 15px;
     padding: 10px 15px;
     border: 1px solid var(--ls-border);
     border-radius: 4px;
     background-color: var(--ls-surface);
 }
+/* Two equal halves: time under way on the left, arrival clock on the right. */
+.passage__cell {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+.passage__cell + .passage__cell {
+    padding-left: 15px;
+    border-left: 1px solid var(--ls-border);
+}
 .passage__time {
+    display: block;
     font-size: 24px;
     font-weight: bold;
-    line-height: 1;
+    line-height: 1.1;
 }
 .passage__caption {
-    margin-left: 8px;
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
 }
+@media (max-width: 480px) {
+    /* "1 d 16 h 30 min" won't fit half a phone at 24px. */
+    .passage__time {
+        font-size: 20px;
+    }
+}
+
 
 /* Live Beaufort read-out under the wind speed converter. */
 .beaufort-readout {
