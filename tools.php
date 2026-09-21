@@ -14,41 +14,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="panel-title">Distance &mdash; kilometers &#8660; nautical miles</h2>
-                </div>
-                <div class="panel-body">
-                    <p class="text-muted">Type into either field &mdash; the other one converts instantly.</p>
-
-                    <div class="row converter">
-                        <div class="col-sm-5">
-                            <label for="js-conv-km">Kilometers</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="js-conv-km"
-                                       inputmode="decimal" autocomplete="off" placeholder="0">
-                                <span class="input-group-addon">km</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 converter__equals" aria-hidden="true">=</div>
-                        <div class="col-sm-5">
-                            <label for="js-conv-nm">Nautical miles</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="js-conv-nm"
-                                       inputmode="decimal" autocomplete="off" placeholder="0">
-                                <span class="input-group-addon">NM</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="help-block converter__note">
-                        One nautical mile is exactly <strong>1.852 km</strong> &mdash; the length of one minute of
-                        latitude, which is why charts and sailors measure distance in it.
-                    </p>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h2 class="panel-title">Passage time &mdash; how long a leg takes</h2>
+                    <h2 class="panel-title">Passage time &mdash; Estimated time en route</h2>
                 </div>
                 <div class="panel-body">
                     <p class="text-muted">How far you're going, and how fast you expect to make good.</p>
@@ -75,16 +41,53 @@
                     </div>
 
                     <div class="passage__result">
-                        <span class="passage__time" id="js-pass-time">&mdash;</span>
-                        <span class="passage__caption">under way</span>
+                        <div class="passage__cell">
+                            <span class="passage__time" id="js-pass-time">&mdash;</span>
+                            <span class="passage__caption">under way</span>
+                        </div>
+                        <div class="passage__cell">
+                            <span class="passage__time" id="js-pass-eta">&mdash;</span>
+                            <span class="passage__caption">arrival from now</span>
+                        </div>
                     </div>
 
                     <p class="help-block converter__note">
                         Speed through the water only &mdash; it says nothing about current, and along
                         the Adriatic islands a channel can run a knot or more against you. A passage
-                        planned at <strong>5 kn</strong> is the usual cruising-yacht guess: that's
-                        <strong>5 NM every hour</strong>, so a 30 NM hop is a six-hour day. Kilometers
-                        convert to NM in the first panel.
+                        planned at <strong>5 kn</strong> is the usual cruising-yacht guess.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Distance &mdash; kilometers &#8660; nautical miles</h2>
+                </div>
+                <div class="panel-body">
+                    <p class="text-muted">Type into either field &mdash; the other one converts instantly.</p>
+
+                    <div class="row converter">
+                        <div class="col-sm-5">
+                            <label for="js-conv-km">Kilometers</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="js-conv-km"
+                                       inputmode="decimal" autocomplete="off" placeholder="0">
+                                <span class="input-group-addon">km</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 converter__equals" aria-hidden="true">=</div>
+                        <div class="col-sm-5">
+                            <label for="js-conv-nm">Nautical miles</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="js-conv-nm"
+                                       inputmode="decimal" autocomplete="off" placeholder="0">
+                                <span class="input-group-addon">NM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="help-block converter__note">
+                        One nautical mile is exactly <strong>1.852 km</strong> &mdash; the length of one minute of latitude.
                     </p>
                 </div>
             </div>
@@ -117,9 +120,8 @@
                     </div>
 
                     <p class="help-block converter__note">
-                        One foot is exactly <strong>0.3048 m</strong>. Boats are advertised in feet
-                        (a &ldquo;40.1&nbsp;ft&rdquo; hull is 12.22&nbsp;m), while Adriatic berths and
-                        price lists are usually quoted per meter of length &mdash; so it pays to know both.
+                        One foot is exactly <strong>0.3048 m</strong>. Boats are advertised in feet, while Adriatic
+                        berths and price lists are usually quoted per meter of length &mdash; so it pays to know both.
                     </p>
                 </div>
             </div>
