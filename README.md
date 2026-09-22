@@ -9,10 +9,10 @@ Visit [https://lite.fliper.si](https://lite.fliper.si) for a live demo.
 
 ## Features
 
+- **Weather forecast** — 7-day DHMZ forecast for 130+ towns along the Croatian
+  coast, grouped by county, with an hourly-detail view. This is the homepage.
 - **Wind forecast** — 72-hour ALADIN wind & gust maps for the whole Adriatic and
   its North / Middle / South sub-areas, with a play/stop animation.
-- **Weather forecast** — 7-day DHMZ forecast for 130+ towns along the Croatian
-  coast, grouped by county, with an hourly-detail view.
 - **Sea forecast** — marine forecast (sea state, Douglas scale, wave animation)
   and current sea temperatures.
 - **Adriatic winds** — a reference guide to the local winds (Bura, Jugo,
@@ -77,8 +77,8 @@ HTML references the bundles with `?v=<filemtime>` for cache-busting, which is wh
 ## Project structure
 
 ```
-index.php          Wind forecast (home)
-weather.php        7-day weather forecast
+index.php          7-day weather forecast (home)
+wind.php           Wind forecast (ALADIN maps)
 sea.php            Sea forecast + sea temperature
 winds.php          Adriatic winds reference
 404.php            Custom not-found page

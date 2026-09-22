@@ -23,6 +23,17 @@ Options -Indexes
     RewriteCond %{HTTP:X-Forwarded-Proto} !=https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+    # Page moves: the weather forecast is now the homepage and the wind forecast
+    # lives at /wind. Old URLs keep working so bookmarks and links don't 404.
+    #   /weather (or /weather.php) -> /
+    #   /?map=<area>               -> /wind?map=<area>
+    # The Adriatic winds guide at /winds is unaffected and must not match either
+    # rule: the first is anchored to "weather", the second only to a bare "/".
+    RewriteRule ^weather(\.php)?/?$ / [R=301,L]
+
+    RewriteCond %{QUERY_STRING} (^|&)map=(north-|middle-|south-)?adriatic(&|$)
+    RewriteRule ^$ /wind [R=301,L,QSA]
+
     # Deny hidden files/dirs (.git, .env, .htaccess, …) but keep /.well-known
     # reachable (Let's Encrypt/ACME challenges, apple-app-site-association, …).
     RewriteRule "(^|/)\.(?!well-known)" - [F,L]
@@ -31,7 +42,7 @@ Options -Indexes
     RewriteRule ^assets/ - [F,L]
 
     # Map an extensionless URL to its .php file, but ONLY when that file exists
-    # (e.g. /weather -> /weather.php). Unknown URLs fall through to the 404 below
+    # (e.g. /wind -> /wind.php). Unknown URLs fall through to the 404 below
     # instead of being rewritten again and again (which caused a 500).
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
