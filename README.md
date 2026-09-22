@@ -11,7 +11,7 @@ Visit [https://lite.fliper.si](https://lite.fliper.si) for a live demo.
 
 - **Wind forecast** — 72-hour ALADIN wind & gust maps for the whole Adriatic and
   its North / Middle / South sub-areas, with a play/stop animation.
-- **Weather forecast** — 7-day DHMZ forecast for 170+ towns along the Croatian
+- **Weather forecast** — 7-day DHMZ forecast for 130+ towns along the Croatian
   coast, grouped by county, with an hourly-detail view.
 - **Sea forecast** — marine forecast (sea state, Douglas scale, wave animation)
   and current sea temperatures.

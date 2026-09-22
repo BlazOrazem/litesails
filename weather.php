@@ -1,6 +1,6 @@
 <?php
     $pageTitle       = '7-Day Adriatic Weather Forecast — Coastal Towns | Lite Sails';
-    $pageDescription = '7-day DHMZ weather forecast for 170+ towns along the Croatian Adriatic coast — temperature, sky, wind and precipitation.';
+    $pageDescription = '7-day DHMZ weather forecast for 130+ towns along the Croatian Adriatic coast — temperature, sky, wind and precipitation.';
 
     /*
      * DHMZ (meteo.hr) 7-day forecast lives at:
