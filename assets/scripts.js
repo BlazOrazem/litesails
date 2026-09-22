@@ -151,6 +151,14 @@ let LiteSails = (function () {
             LiteSails.map = $('div.tab-content').data('source');
             LiteSails.updateWindAreaTitle(LiteSails.map);
 
+            // The maps are labelled in m/s, boat instruments read knots. Same pair
+            // as the tools page, without km/h. Wired before the animation setup
+            // below so it survives that early return on pages with no controls.
+            LiteSails.initConverter([
+                { selector: '#js-wind-conv-ms', factor: 1 },
+                { selector: '#js-wind-conv-kn', factor: 1.852 / 3.6 }
+            ]);
+
             var $play = $('.animation-play');
             var $stop = $('.animation-stop');
             var $hours = $('.aladin-hour > li');

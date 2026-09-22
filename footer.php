@@ -4,13 +4,6 @@
     <p class="text-center">
         &copy; <a href="https://orazem.si" target="_blank" rel="noopener noreferrer">Orazem.si</a> <?= date('Y') ?>. All rights reserved.
     </p>
-
-    <p class="text-center">
-        <i class="github-icon"></i>
-        <a href="https://github.com/BlazOrazem/litesails" target="_blank" rel="noopener noreferrer">
-            Lite Sails on Github.
-        </a>
-    </p>
 </footer>
 
 <div id="js-a2hs" class="a2hs" style="display: none;">

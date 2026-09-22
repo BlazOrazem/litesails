@@ -81,6 +81,42 @@
             <hr>
 
             <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Wind speed &mdash; m/s &#8660; knots</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row converter">
+                                <div class="col-sm-5">
+                                    <label for="js-wind-conv-ms">Meters per second</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="js-wind-conv-ms"
+                                               inputmode="decimal" autocomplete="off" placeholder="0">
+                                        <span class="input-group-addon">m/s</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 converter__equals" aria-hidden="true">=</div>
+                                <div class="col-sm-5">
+                                    <label for="js-wind-conv-kn">Knots</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="js-wind-conv-kn"
+                                               inputmode="decimal" autocomplete="off" placeholder="0">
+                                        <span class="input-group-addon">kn</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="help-block converter__note">
+                                Read a value off the maps above and type it in. Find more on
+                                <a href="/tools">tools page</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-6 text-center">
                     <p class="lead">
                         <strong>Wind speed</strong> is expressed in <strong>10 meters per second</strong>. Multiply the
