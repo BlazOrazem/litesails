@@ -1,6 +1,13 @@
 <?php
-    function isPage($name = 'index') {
-        echo str_contains($_SERVER['REQUEST_URI'], $name) ? 'active' : '';
+    /**
+     * Which nav item to mark active. Keyed off the resolved script name
+     * (index, wind, sea, winds, tools, 404) rather than a substring of
+     * REQUEST_URI: the homepage's URI is just "/" and would never match
+     * "index", and a substring test can't tell "/wind" from "/winds".
+     */
+    function isPage(string ...$names): void {
+        $current = basename($_SERVER['SCRIPT_NAME'] ?? '', '.php');
+        echo in_array($current, $names, true) ? 'active' : '';
     }
 ?>
 
@@ -25,7 +32,10 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="dropdown <?= isPage('index') ?>">
+                <li class="<?= isPage('index') ?>">
+                    <a href="/">Weather forecast</a>
+                </li>
+                <li class="dropdown <?= isPage('wind') ?>">
                     <a href="#"
                        class="dropdown-toggle"
                        data-toggle="dropdown"
@@ -36,14 +46,11 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">Select an area</li>
-                        <li><a href="/?map=adriatic" class="wind-map" data-map="adriatic">Adriatic</a></li>
-                        <li><a href="/?map=north-adriatic" class="wind-map" data-map="north-adriatic">North Adriatic</a></li>
-                        <li><a href="/?map=middle-adriatic" class="wind-map" data-map="middle-adriatic">Middle Adriatic</a></li>
-                        <li><a href="/?map=south-adriatic" class="wind-map" data-map="south-adriatic">South Adriatic</a></li>
+                        <li><a href="/wind?map=adriatic" class="wind-map" data-map="adriatic">Adriatic</a></li>
+                        <li><a href="/wind?map=north-adriatic" class="wind-map" data-map="north-adriatic">North Adriatic</a></li>
+                        <li><a href="/wind?map=middle-adriatic" class="wind-map" data-map="middle-adriatic">Middle Adriatic</a></li>
+                        <li><a href="/wind?map=south-adriatic" class="wind-map" data-map="south-adriatic">South Adriatic</a></li>
                     </ul>
-                </li>
-                <li class="<?= isPage('weather') ?>">
-                    <a href="/weather">Weather forecast</a>
                 </li>
                 <li class="<?= isPage('sea') ?>">
                     <a href="/sea">Sea forecast</a>
@@ -54,7 +61,7 @@
                 <li class="<?= isPage('tools') ?>">
                     <a href="/tools">Tools</a>
                 </li>
-                <li class="<?= isPage('knots') ?>">
+                <li>
                     <a href="https://www.animatedknots.com/boating-knots" target="_blank" rel="noopener noreferrer">Nautical knots</a>
                 </li>
             </ul>
