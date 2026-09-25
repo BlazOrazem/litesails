@@ -1,7 +1,7 @@
 <?php
     /**
      * Which nav item to mark active. Keyed off the resolved script name
-     * (index, wind, sea, winds, tools, 404) rather than a substring of
+     * (index, wind, lightning, sea, winds, tools, 404) rather than a substring of
      * REQUEST_URI: the homepage's URI is just "/" and would never match
      * "index", and a substring test can't tell "/wind" from "/winds".
      */
@@ -35,7 +35,7 @@
                 <li class="<?= isPage('index') ?>">
                     <a href="/">Weather forecast</a>
                 </li>
-                <li class="dropdown <?= isPage('wind') ?>">
+                <li class="dropdown <?= isPage('wind', 'lightning') ?>">
                     <a href="#"
                        class="dropdown-toggle"
                        data-toggle="dropdown"
@@ -50,6 +50,8 @@
                         <li><a href="/wind?map=north-adriatic" class="wind-map" data-map="north-adriatic">North Adriatic</a></li>
                         <li><a href="/wind?map=middle-adriatic" class="wind-map" data-map="middle-adriatic">Middle Adriatic</a></li>
                         <li><a href="/wind?map=south-adriatic" class="wind-map" data-map="south-adriatic">South Adriatic</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/lightning">Lightning</a></li>
                     </ul>
                 </li>
                 <li class="<?= isPage('sea') ?>">

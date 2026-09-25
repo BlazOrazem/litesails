@@ -31,6 +31,10 @@
     </div>
 </div>
 
+<?php // Page-only vendor JS (paths under /dist, set as $pageScripts), before app.min.js uses it. ?>
+<?php foreach (($pageScripts ?? []) as $script): ?>
+<script src="<?= htmlspecialchars($script) ?>?v=<?= @filemtime(__DIR__ . $script) ?>"></script>
+<?php endforeach; ?>
 <script src="/dist/app.min.js?v=<?= @filemtime(__DIR__ . '/dist/app.min.js') ?>"></script>
 
 </body>

@@ -27,7 +27,7 @@
             <hr>
 
             <nav class="text-center">
-                <ul class="pagination aladin-hour">
+                <ul class="pagination aladin-hour hour-grid">
                     <li><a href="#" data-value="03">03</a></li>
                     <li><a href="#" data-value="06">06</a></li>
                     <li><a href="#" data-value="09">09</a></li>
@@ -70,7 +70,6 @@
 
             <div class="tab-content" data-source="<?= $map ?>">
                 <div id="js-tab-wind" class="tab-pane active">
-                    <img src="/images/windrose.png" id="js-wind-rose" class="wind-rose img-responsive center-block" alt="Compass rose showing wind directions">
                     <div id="js-wind-forecast-image-frame"></div>
                 </div>
                 <div id="js-tab-gusts" class="tab-pane">
@@ -87,7 +86,7 @@
                             <h2 class="panel-title">Wind speed &mdash; m/s &#8660; knots</h2>
                         </div>
                         <div class="panel-body">
-                            <div class="row converter">
+                            <div class="row converter converter--inline">
                                 <div class="col-sm-5">
                                     <label for="js-wind-conv-ms">Meters per second</label>
                                     <div class="input-group">
@@ -117,21 +116,16 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-12 text-center">
                     <p class="lead">
-                        <strong>Wind speed</strong> is expressed in <strong>10 meters per second</strong>. Multiply the
-                        prediction <strong>by 2</strong> and calculate the result expressed in <strong>knots</strong>.
+                        <strong>Wind speed</strong> is expressed in <strong>10 meters per second</strong>.
                         1 meter per second is 1,94 knots.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center">
-                    <p class="lead">
-                        <strong>Time</strong> is expressed in UTC (Universal Time). Add <strong>2 hours</strong> in
-                        the summer or <strong>1 hour</strong> in the winter to calculate the result expressed in local
-                        (Adriatic) time.
+                        <br><strong>Times</strong> are local (Croatian) time.
                     </p>
                 </div>
             </div>
+
+            <img src="/images/windrose.png" class="wind-rose img-responsive center-block" alt="Compass rose showing wind directions">
 
         </div>
     </div>

@@ -1,7 +1,8 @@
 <?php
 /*
- * Fetching and caching of meteo.hr (DHMZ) pages, shared by sea.php and
- * weather.php. Defines functions only — no output, so it is safe to include
+ * Fetching and caching of meteo.hr (DHMZ) pages, shared by sea.php,
+ * index.php and lightning.php (which uses dhmzHttpGet() only — its data is
+ * too short-lived to cache). Defines functions only — no output, so it is safe to include
  * before setcookie()/headers. Not meant to be requested over HTTP; .htaccess
  * returns 403 for it.
  *
