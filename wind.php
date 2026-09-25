@@ -27,7 +27,7 @@
             <hr>
 
             <nav class="text-center">
-                <ul class="pagination aladin-hour">
+                <ul class="pagination aladin-hour hour-grid">
                     <li><a href="#" data-value="03">03</a></li>
                     <li><a href="#" data-value="06">06</a></li>
                     <li><a href="#" data-value="09">09</a></li>
@@ -70,7 +70,6 @@
 
             <div class="tab-content" data-source="<?= $map ?>">
                 <div id="js-tab-wind" class="tab-pane active">
-                    <img src="/images/windrose.png" id="js-wind-rose" class="wind-rose img-responsive center-block" alt="Compass rose showing wind directions">
                     <div id="js-wind-forecast-image-frame"></div>
                 </div>
                 <div id="js-tab-gusts" class="tab-pane">
@@ -87,7 +86,7 @@
                             <h2 class="panel-title">Wind speed &mdash; m/s &#8660; knots</h2>
                         </div>
                         <div class="panel-body">
-                            <div class="row converter">
+                            <div class="row converter converter--inline">
                                 <div class="col-sm-5">
                                     <label for="js-wind-conv-ms">Meters per second</label>
                                     <div class="input-group">
@@ -125,6 +124,8 @@
                     </p>
                 </div>
             </div>
+
+            <img src="/images/windrose.png" class="wind-rose img-responsive center-block" alt="Compass rose showing wind directions">
 
         </div>
     </div>

@@ -91,6 +91,33 @@ img.wind-rose {
     }
 }
 
+/* Wind-forecast hour tiles (wind.php): an even 8-per-row grid (3 rows of the
+   24 hours) with gaps, instead of Bootstrap's joined pagination strip that
+   wraps wherever it runs out of room. The grid spans the content width, so
+   only each row's first and last tile touch the edges. Wide screens have room
+   for all 24 on one line. */
+.pagination.hour-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+}
+.pagination.hour-grid > li {
+    display: block;
+}
+.pagination.hour-grid > li > a {
+    float: none;
+    display: block;
+    margin-left: 0;
+    padding: 8px 0;       /* taller tap target */
+    border-radius: 4px;   /* every tile rounded, not just the strip's ends */
+}
+@media (min-width: 1200px) {
+    .pagination.hour-grid {
+        grid-template-columns: repeat(24, 1fr);
+        gap: 4px;
+    }
+}
+
 /*#waves .pagination li {*/
 /*    width: 25%;*/
 /*}*/
@@ -298,6 +325,39 @@ ul.weather > li.panel > a {
     margin-bottom: 0;
 }
 
+/* A 2-field pair kept on one line at every width (wind.php): the fields share
+   the space and the "=" takes only what it needs, instead of the col-sm-5/2/5
+   split stacking into three rows below 768px. Aligned on the bottom edge, so
+   the inputs line up even if a label wraps on a very narrow phone. */
+.converter--inline {
+    display: flex;
+    align-items: flex-end;
+}
+.converter--inline:before,
+.converter--inline:after {
+    display: none; /* Bootstrap's clearfix pseudo-elements would be flex items */
+}
+.converter--inline > div {
+    float: none;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.converter--inline > div:not(.converter__equals) {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+}
+.converter--inline > .converter__equals {
+    flex: 0 0 auto;
+    width: auto;
+    padding-top: 0;
+    line-height: 34px; /* input height, so the "=" sits level with the inputs */
+}
+@media (max-width: 767px) {
+    /* Phones: slimmer padding, so a long result (66.6307) isn't clipped. */
+    .converter--inline .form-control { padding-left: 8px; padding-right: 6px; }
+    .converter--inline .input-group-addon { padding-left: 7px; padding-right: 7px; }
+}
 
 /* Passage time: distance field + speed slider. */
 .passage__speed {

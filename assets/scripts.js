@@ -220,9 +220,9 @@ let LiteSails = (function () {
                 show($(this).parent().index());
             });
 
-            // Initial state: only "Play" visible; the wind rose stays until a
-            // forecast is shown (on Play, or when an hour is picked).
+            // Initial state: only "Play" visible, first hour (03) shown.
             $stop.hide();
+            show(0);
         },
 
         displayWindForecastImage: function (hour) {
@@ -243,8 +243,6 @@ let LiteSails = (function () {
 
             var windUrl = url + wind + area + hour + extension;
             var gustsUrl = url + gusts + area + hour + extension;
-
-            $("#js-wind-rose").remove();
 
             if ($('#js-wind-forecast-image').length === 0) {
                 $('#js-wind-forecast-image-frame').prepend('<img src="' + windUrl + '" id="js-wind-forecast-image" class="img-responsive center-block" />');

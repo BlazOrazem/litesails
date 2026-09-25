@@ -66,7 +66,7 @@
                 <div class="panel-body">
                     <p class="text-muted">Type into either field &mdash; the other one converts instantly.</p>
 
-                    <div class="row converter">
+                    <div class="row converter converter--inline">
                         <div class="col-sm-5">
                             <label for="js-conv-km">Kilometers</label>
                             <div class="input-group">
@@ -99,7 +99,7 @@
                 <div class="panel-body">
                     <p class="text-muted">Type into either field &mdash; the other one converts instantly.</p>
 
-                    <div class="row converter">
+                    <div class="row converter converter--inline">
                         <div class="col-sm-5">
                             <label for="js-len-m">Meters</label>
                             <div class="input-group">
