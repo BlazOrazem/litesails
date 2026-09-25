@@ -710,3 +710,11 @@ footer p { color: var(--ls-muted); }
 .btn-default:hover,
 .btn-default:focus,
 .btn-default:active { background-color: var(--ls-active); color: var(--ls-text); border-color: var(--ls-input-border); }
+
+/* Panel footers (Bootstrap hardcodes #f5f5f5 / #ddd) */
+.panel-footer { background-color: var(--ls-surface); color: var(--ls-text); border-top-color: var(--ls-border); }
+
+/* Tide gauges (sea.php, Tide tab) */
+.tide-station > .table { margin-bottom: 0; }
+.tide-station__next .glyphicon { margin-right: 4px; color: var(--ls-link); }
+.tide-station__level { float: right; font-weight: bold; }

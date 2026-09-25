@@ -117,18 +117,11 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-12 text-center">
                     <p class="lead">
-                        <strong>Wind speed</strong> is expressed in <strong>10 meters per second</strong>. Multiply the
-                        prediction <strong>by 2</strong> and calculate the result expressed in <strong>knots</strong>.
+                        <strong>Wind speed</strong> is expressed in <strong>10 meters per second</strong>.
                         1 meter per second is 1,94 knots.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center">
-                    <p class="lead">
-                        <strong>Time</strong> is expressed in UTC (Universal Time). Add <strong>2 hours</strong> in
-                        the summer or <strong>1 hour</strong> in the winter to calculate the result expressed in local
-                        (Adriatic) time.
+                        <br><strong>Times</strong> are local (Croatian) time.
                     </p>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <?php
-    $pageTitle       = 'Adriatic Sea Forecast — Waves & Sea Temperature | Lite Sails';
-    $pageDescription = 'Marine forecast for the Adriatic: sea state, wave height and direction (Douglas scale), and current sea temperatures.';
+    $pageTitle       = 'Adriatic Sea Forecast — Waves, Tides & Sea Temperature | Lite Sails';
+    $pageDescription = 'Marine forecast for the Adriatic: sea state, wave height and direction (Douglas scale), current sea temperatures, and high/low tide times.';
 
     // Wave/map images load from prognoza.hr via JS — warm the connection early.
     $preconnect = ['https://prognoza.hr'];
@@ -16,6 +16,8 @@
     // DOM extension (no third-party dependency).
     $forecastUrl    = 'https://meteo.hr/prognoze.php?section=prognoze_specp&param=pomorci';
     $temperatureUrl = 'https://meteo.hr/podaci.php?section=podaci_vrijeme&param=more_n';
+    // Tides come from HHI (Croatian Hydrographic Institute), not DHMZ.
+    $tideUrl        = 'https://www.hhi.hr/webapi/data.json';
 
     /** Load an HTML string into a DOMXPath (UTF-8 safe), or null on empty input. */
     function seaXPath($html) {
@@ -61,6 +63,85 @@
         return seaInnerHtml($node);
     }
 
+    /**
+     * Tide-gauge stations ("MP …", mareografske postaje) from HHI's JSON feed —
+     * the same one the "Plima i oseka" tiles on hhi.hr fill themselves from
+     * client-side (the numbers in hhi.hr's HTML are 2020 placeholders). The feed
+     * also carries wave/wind/pressure stations (type 2–4); tides are type 1.
+     *
+     * Returns stations north to south, every value validated: times as
+     * DateTime (or null), levels as float metres (or null), next tide as
+     * 'HW'/'LW' (or null). Nothing from the feed reaches the page unchecked.
+     */
+    function seaTides($json) {
+        $items = json_decode((string) $json, true);
+        if (!is_array($items)) {
+            return [];
+        }
+
+        $stations = [];
+
+        foreach ($items as $item) {
+            if (!is_array($item) || ($item['type'] ?? null) !== 1 || !is_string($item['name'] ?? null)) {
+                continue;
+            }
+
+            $data = is_array($item['data'] ?? null) ? $item['data'] : [];
+
+            $stations[] = [
+                'name'       => trim(preg_replace('/^MP\s+/u', '', $item['name'])),
+                'lat'        => (float) ($item['lat'] ?? 0),
+                'measuredAt' => seaTideTime($data['LastMeasuredDateTime'] ?? ''),
+                'measured'   => seaTideLevel($data['LastMeasuredLevel'] ?? null),
+                'predicted'  => seaTideLevel($data['PredictionLevel'] ?? null),
+                'nextAt'     => seaTideTime($data['NextTideDateTime'] ?? ''),
+                'nextLevel'  => seaTideLevel($data['NextTideLevel'] ?? null),
+                'nextType'   => in_array($data['NextTideType'] ?? null, ['HW', 'LW'], true) ? $data['NextTideType'] : null,
+            ];
+        }
+
+        // North to south, the way you'd sail down the coast.
+        usort($stations, function ($a, $b) {
+            return $b['lat'] <=> $a['lat'];
+        });
+
+        return $stations;
+    }
+
+    /**
+     * An HHI "25.09.2026 15:45" stamp as a DateTime in Croatian local time.
+     *
+     * HHI stamps in UTC+1 all year (no summer time) — at 14:53 UTC the
+     * freshest readings say 15:45–15:49 — so it's parsed as +01:00 and shown
+     * as Europe/Zagreb, which is an hour later in summer.
+     */
+    function seaTideTime($value) {
+        $time = DateTime::createFromFormat('!d.m.Y H:i', (string) $value, new DateTimeZone('+01:00'));
+
+        return $time ? $time->setTimezone(new DateTimeZone('Europe/Zagreb')) : null;
+    }
+
+    /** A level in metres as a float, or null for HHI's "-"/"undefined"/missing. */
+    function seaTideLevel($value) {
+        return is_numeric($value) ? (float) $value : null;
+    }
+
+    /** "15:45" for today, "Sat 03:12" for another day, "–" when unknown. */
+    function seaTideClock($time) {
+        if (!$time) {
+            return '&ndash;';
+        }
+
+        $today = new DateTime('now', new DateTimeZone('Europe/Zagreb'));
+
+        return $time->format('Y-m-d') === $today->format('Y-m-d') ? $time->format('H:i') : $time->format('D H:i');
+    }
+
+    /** "0.40 m", or "–" when unknown. */
+    function seaTideMetres($level) {
+        return $level === null ? '&ndash;' : number_format($level, 2) . ' m';
+    }
+
     /** All <th> then all <td> texts of a table node, whitespace-normalised. */
     function seaCells($table) {
         $data = [];
@@ -100,6 +181,9 @@
         </li>
         <li>
             <a href="#temperature" data-toggle="tab">Temperature</a>
+        </li>
+        <li>
+            <a href="#tide" data-toggle="tab">Tide</a>
         </li>
     </ul>
 
@@ -336,6 +420,69 @@
                 <div class="col-md-12 text-center">
                     <p class="lead">
                         <strong>Temperatures</strong> are expressed in <strong>degrees Celsius</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tide">
+            <?php
+                // HHI refreshes its gauges every ~15 min, so a shorter TTL than
+                // the DHMZ pages; dhmzFetch() is source-agnostic despite its name
+                // (the _dhmz_ prefix is what keeps the cache file 403'd).
+                $tides = seaTides(dhmzFetch($tideUrl, dhmzCachePath('hhi_tide'), 600));
+            ?>
+            <h3 class="text-center alert alert-success">Adriatic tide</h3>
+            <?php if ($tides): ?>
+            <div class="row tide-stations">
+                <?php foreach ($tides as $station): ?>
+                <div class="col-sm-6 col-md-4">
+                    <div class="panel panel-default tide-station">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><?= htmlspecialchars($station['name']) ?></h4>
+                        </div>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Sea level</td>
+                                    <td class="text-right"><strong><?= seaTideMetres($station['measured']) ?></strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Predicted</td>
+                                    <td class="text-right"><?= seaTideMetres($station['predicted']) ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Measured at</td>
+                                    <td class="text-right"><?= seaTideClock($station['measuredAt']) ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="panel-footer tide-station__next">
+                            <?php if ($station['nextType']): ?>
+                                <span class="glyphicon glyphicon-arrow-<?= $station['nextType'] === 'HW' ? 'up' : 'down' ?>" aria-hidden="true"></span>
+                                Next <strong><?= $station['nextType'] === 'HW' ? 'high tide' : 'low tide' ?></strong>
+                                at <strong><?= seaTideClock($station['nextAt']) ?></strong>
+                                <span class="tide-station__level"><?= seaTideMetres($station['nextLevel']) ?></span>
+                            <?php else: ?>
+                                Next tide unknown
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php else: ?>
+            <div class="alert alert-warning text-center">
+                Tide data couldn't be loaded from HHI right now. Please try again later.
+            </div>
+            <?php endif; ?>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="lead">
+                        <strong>Sea levels</strong> are expressed in <strong>meters</strong>.<br><strong>Times</strong> are local (Croatian) time.
+                    </p>
+                    <p class="text-muted small">
+                        Data: <a href="https://www.hhi.hr/" target="_blank" rel="noopener noreferrer">Croatian Hydrographic Institute (HHI)</a>.
                     </p>
                 </div>
             </div>
