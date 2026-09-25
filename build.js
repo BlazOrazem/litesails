@@ -7,6 +7,7 @@
  *   dist/app.min.css   Bootstrap CSS + custom styles (minified & optimised)
  *   dist/app.min.js    jQuery + Bootstrap JS + custom scripts (minified)
  *   dist/fonts/        Bootstrap glyphicon fonts (so the CSS url()s resolve)
+ *   dist/leaflet/      Leaflet, for the lightning map page only
  *
  * Run with:  npm install  &&  npm run build
  */
@@ -64,9 +65,29 @@ async function build() {
     ].join('\n;\n');
     fs.writeFileSync(path.join(dist, 'app.min.js'), js);
 
+    /* ---------------------------- Leaflet ---------------------------- */
+    // Only the lightning map needs Leaflet (~145 KB), so it ships as its own
+    // pair of files that lightning.php loads, instead of riding in every
+    // page's app.min.js. Its CSS points at images/… relatively, so the
+    // images folder goes alongside.
+    const leafletSrc = path.join(nm, 'leaflet', 'dist');
+    const leafletDst = path.join(dist, 'leaflet');
+    fs.mkdirSync(path.join(leafletDst, 'images'), { recursive: true });
+
+    const leafletCss = new CleanCSS({ level: 2, rebase: false }).minify(read(leafletSrc, 'leaflet.css'));
+    if (leafletCss.errors.length) {
+        throw new Error('Leaflet CSS errors: ' + leafletCss.errors.join('; '));
+    }
+    fs.writeFileSync(path.join(leafletDst, 'leaflet.min.css'), leafletCss.styles);
+    fs.copyFileSync(path.join(leafletSrc, 'leaflet.js'), path.join(leafletDst, 'leaflet.min.js'));
+    for (const file of fs.readdirSync(path.join(leafletSrc, 'images'))) {
+        fs.copyFileSync(path.join(leafletSrc, 'images', file), path.join(leafletDst, 'images', file));
+    }
+
     const kb = (n) => (n / 1024).toFixed(1) + ' KB';
     console.log('Built dist/app.min.css (' + kb(cssOut.length) + ')');
     console.log('Built dist/app.min.js  (' + kb(js.length) + ')');
+    console.log('Built dist/leaflet/    (' + kb(leafletCss.styles.length) + ' CSS)');
 }
 
 build().catch((err) => {

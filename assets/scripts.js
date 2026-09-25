@@ -22,6 +22,10 @@ let LiteSails = (function () {
                 LiteSails.initSea();
             }
 
+            if (area == 'lightning') {
+                LiteSails.initLightning();
+            }
+
             if (area == 'tools') {
                 LiteSails.initTools();
             }
@@ -415,6 +419,64 @@ let LiteSails = (function () {
             // Initial state: only "Play" visible, first day shown.
             $stop.hide();
             show(0);
+        },
+
+        // Lightning page: draws the strikes lightning.php parsed out of meteo.hr
+        // (a JSON data block, since inline JS is off-limits) on a Leaflet map.
+        // Each strike is [lat, lon, age], age 0 = < 10 min, 1 = 10–20, 2 = 20–30.
+        initLightning: function () {
+            var $map = $('#js-lightning-map');
+            if (!$map.length || typeof L === 'undefined') {
+                return;
+            }
+
+            var data;
+            try {
+                data = JSON.parse($('#js-lightning-data').text());
+            } catch (e) {
+                return;
+            }
+
+            // Colours come from the CSS variables that also paint the legend
+            // dots, so the two can't drift apart.
+            var styles = window.getComputedStyle(document.documentElement);
+            var colours = ['#e3261b', '#f5c400', '#2f6fd6'].map(function (fallback, age) {
+                return $.trim(styles.getPropertyValue('--ls-strike-' + age)) || fallback;
+            });
+
+            // The box DHMZ collects strikes for (same as meteo.hr draws).
+            var area = [[42, 12], [48, 20]];
+
+            // Canvas renders ~2000 dots far faster than one SVG node each. Wheel
+            // zoom is off so scrolling the page past the map doesn't zoom it.
+            var lightningMap = L.map($map[0], { preferCanvas: true, scrollWheelZoom: false });
+            lightningMap.fitBounds(area);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(lightningMap);
+
+            L.rectangle(area, {
+                color: '#000099', weight: 1, opacity: 0.4, fillOpacity: 0.05, interactive: false
+            }).addTo(lightningMap);
+
+            // Oldest first, so the newest strikes are drawn on top.
+            var strikes = (data.strikes || []).slice().sort(function (a, b) {
+                return b[2] - a[2];
+            });
+
+            $.each(strikes, function (i, strike) {
+                L.circleMarker([strike[0], strike[1]], {
+                    radius: 5,
+                    color: '#000000',
+                    weight: 1,
+                    opacity: 0.6,
+                    fillColor: colours[strike[2]],
+                    fillOpacity: 0.9,
+                    interactive: false
+                }).addTo(lightningMap);
+            });
         },
 
         // Tools page: live unit converters (no submit button — they convert as

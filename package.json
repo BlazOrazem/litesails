@@ -9,7 +9,8 @@
     },
     "dependencies": {
         "bootstrap": "3.4.1",
-        "jquery": "3.7.1"
+        "jquery": "3.7.1",
+        "leaflet": "1.9.4"
     },
     "devDependencies": {
         "clean-css": "^5.3.3",

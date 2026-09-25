@@ -412,6 +412,12 @@ ul.weather > li.panel > a {
     --ls-input-text: #555555;
     --ls-input-border: #cccccc;
     --ls-logo-invert: 0;
+    --ls-map-tiles-filter: none;
+
+    /* Lightning strike ages (map dots + legend). Same in both themes. */
+    --ls-strike-0: #e3261b;
+    --ls-strike-1: #f5c400;
+    --ls-strike-2: #2f6fd6;
 
     --ls-alert-danger-bg: #f2dede;    --ls-alert-danger-text: #a94442;    --ls-alert-danger-border: #ebccd1;
     --ls-alert-warning-bg: #fcf8e3;    --ls-alert-warning-text: #8a6d3b;    --ls-alert-warning-border: #faebcc;
@@ -450,6 +456,7 @@ ul.weather > li.panel > a {
         --ls-input-text: #d7e1ea;
         --ls-input-border: #2b3b49;
         --ls-logo-invert: 1;
+        --ls-map-tiles-filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
 
         --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
         --ls-alert-warning-bg: #3a3520;    --ls-alert-warning-text: #f0dca0;    --ls-alert-warning-border: #5a5030;
@@ -488,6 +495,7 @@ ul.weather > li.panel > a {
     --ls-input-text: #d7e1ea;
     --ls-input-border: #2b3b49;
     --ls-logo-invert: 1;
+    --ls-map-tiles-filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
 
     --ls-alert-danger-bg: #3a2023;    --ls-alert-danger-text: #f0b6b9;    --ls-alert-danger-border: #5a3034;
     --ls-alert-warning-bg: #3a3520;    --ls-alert-warning-text: #f0dca0;    --ls-alert-warning-border: #5a5030;
@@ -657,3 +665,48 @@ footer p { color: var(--ls-muted); }
     :root:not([data-theme="light"]) .theme-toggle__moon { display: none; }
     :root:not([data-theme="light"]) .theme-toggle__sun { display: block; }
 }
+
+/* Dropdown divider (the Lightning entry under the wind areas) */
+.dropdown-menu .divider { background-color: var(--ls-border); }
+
+/* Lightning map (lightning.php) */
+.lightning-map {
+    height: 560px;
+    margin-bottom: 20px;
+    border: 1px solid var(--ls-border);
+    background-color: var(--ls-surface);
+}
+@media (max-width: 767px) {
+    /* Shorter on phones, so there's page left to scroll by outside the map. */
+    .lightning-map { height: 380px; }
+}
+/* OSM tiles have no dark style; invert them (hue-rotate keeps the sea blue). */
+.lightning-map .leaflet-tile-pane { filter: var(--ls-map-tiles-filter); }
+.lightning-map .leaflet-bar a,
+.lightning-map .leaflet-control-attribution { background-color: var(--ls-surface); color: var(--ls-text); border-color: var(--ls-border); }
+.lightning-map .leaflet-control-attribution a { color: var(--ls-link); }
+
+.lightning-legend .table > tbody > tr > td,
+.lightning-legend .table > tbody > tr > th { border-top-color: var(--ls-border); }
+.lightning-legend .panel-body p { margin-bottom: 15px; }
+.lightning-legend__total > th { font-weight: bold; }
+.lightning-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    vertical-align: -1px;
+}
+.lightning-dot--0 { background-color: var(--ls-strike-0); }
+.lightning-dot--1 { background-color: var(--ls-strike-1); }
+.lightning-dot--2 { background-color: var(--ls-strike-2); }
+.lightning-source { margin-top: 10px; }
+.lightning-legend > .table + .panel-body { border-top-color: var(--ls-border); }
+
+/* Default buttons (lightning Refresh, weather "Back to 7-day forecast") */
+.btn-default { background-color: var(--ls-surface-active); color: var(--ls-text); border-color: var(--ls-input-border); }
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active { background-color: var(--ls-active); color: var(--ls-text); border-color: var(--ls-input-border); }

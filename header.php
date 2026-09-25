@@ -98,6 +98,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
+    <?php // Page-only vendor CSS (paths under /dist), before ours so ours wins. ?>
+    <?php foreach (($pageStyles ?? []) as $style): ?>
+    <link rel="stylesheet" href="<?= htmlspecialchars($style) ?>?v=<?= @filemtime(__DIR__ . $style) ?>">
+    <?php endforeach; ?>
     <link rel="stylesheet" href="/dist/app.min.css?v=<?= @filemtime(__DIR__ . '/dist/app.min.css') ?>">
 </head>
 

@@ -96,8 +96,9 @@ Options -Indexes
     # Content Security Policy. All scripts are self-hosted in one bundled file with
     # no inline JS, so script-src stays strict. Inline style="" attributes in the
     # markup require 'unsafe-inline' for styles. Wind/wave forecast images come from
-    # prognoza.hr and weather icons from meteo.hr; everything else is same-origin.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://prognoza.hr https://meteo.hr; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+    # prognoza.hr, weather icons from meteo.hr, and the lightning map's base tiles
+    # from OpenStreetMap; everything else is same-origin.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://prognoza.hr https://meteo.hr https://tile.openstreetmap.org; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
 
     # HSTS: tell browsers to use HTTPS for a year. Sent only over HTTPS connections
     # (harmless/ignored over plain HTTP). 'preload' intentionally omitted.
